@@ -1,0 +1,19 @@
+[Bb]in
+[Dd]ebug
+[Rr]elease
+[Oo]bj
+
+*.exe
+*.exe.config
+Dev.config
+
+# Visual Studio
+.vs
+*.suo
+*.user
+*.sln
+
+# Packages
+packages
+*.nupkg
+
