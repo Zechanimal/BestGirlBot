@@ -24,7 +24,7 @@ namespace BestGirlBot.Discord.Models
 		[JsonProperty("syncing")]
 		public bool Syncing { get; set; }
 		[JsonProperty("role_id"), JsonConverter(typeof(SnowflakeJsonConverter))]
-		public string RoleId { get; set; }
+		public ulong RoleId { get; set; }
 		[JsonProperty("expire_behavior")]
 		public int ExpireBehavior { get; set; }
 		[JsonProperty("expire_grace_period")]

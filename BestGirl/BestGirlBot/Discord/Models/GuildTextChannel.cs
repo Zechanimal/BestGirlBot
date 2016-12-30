@@ -6,7 +6,7 @@ namespace BestGirlBot.Discord.Models
 	public class GuildTextChannel : GuildChannel
 	{
 		[JsonProperty("last_message_id"), JsonConverter(typeof(SnowflakeJsonConverter))]
-		public string LastMessageId { get; set; }
+		public ulong LastMessageId { get; set; }
 		[JsonProperty("topic")]
 		public string Topic { get; set; }
 	}

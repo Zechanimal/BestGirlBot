@@ -8,6 +8,6 @@ namespace BestGirlBot.Discord.Models
 		[JsonProperty("recipient")]
 		public User Recipient { get; set; }
 		[JsonProperty("last_message_id"), JsonConverter(typeof(SnowflakeJsonConverter))]
-		public string LastMessageId { get; set; }
+		public ulong LastMessageId { get; set; }
 	}
 }

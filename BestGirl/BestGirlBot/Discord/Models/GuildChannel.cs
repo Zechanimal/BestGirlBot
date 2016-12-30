@@ -18,7 +18,7 @@ namespace BestGirlBot.Discord.Models
 		}
 
 		[JsonProperty("guild_id"), JsonConverter(typeof(SnowflakeJsonConverter))]
-		public string GuildId { get; set; }
+		public ulong GuildId { get; set; }
 		[JsonProperty("name")]
 		public string Name { get; set; }
 		[JsonProperty("type")]
