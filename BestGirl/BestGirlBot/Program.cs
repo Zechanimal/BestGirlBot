@@ -2,7 +2,9 @@
 using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using Newtonsoft.Json;
+using BestGirlBot.Discord.Gateway;
 
 namespace BestGirlBot
 {
@@ -16,10 +18,17 @@ namespace BestGirlBot
 			client.DefaultRequestHeaders.UserAgent.ParseAdd("DiscordBot (BestGirlBot, 0.1)");
 
 			// Example endpoint
-			var response = client.GetAsync("users/@me").Result;
+			var response = client.GetAsync("gateway").Result;
 			var body = response.Content.ReadAsStringAsync().Result;
-			var user = JsonConvert.DeserializeObject<BestGirlBot.Discord.Models.User>(body);
-			Console.WriteLine(user.Username);
+
+			var getGatewayResponseDefinition = new { url = "" };
+			var obj = JsonConvert.DeserializeAnonymousType(body, getGatewayResponseDefinition);
+			Console.WriteLine($"Gateway url: {obj.url}");
+
+			GatewaySocketClient socket = new GatewaySocketClient();
+
+			var task = socket.Connect(obj.url, CancellationToken.None);
+			task.Wait();
 
 			Console.ReadLine();
 		}
