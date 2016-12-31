@@ -9,18 +9,14 @@ namespace BestGirlBot.Discord.Gateway
 		public GatewayOpCode OpCode { get; set; }
 		[JsonProperty("d")]
 		public object Data { get; set; }
+		[JsonProperty("s")]
+		public int? Sequence { get; set; }
+		[JsonProperty("t")]
+		public string Type { get; set; }
 
 		public T DataAs<T>()
 		{
 			return (Data as JObject).ToObject<T>();
 		}
-	}
-
-	public class DispatchMessage : GatewayMessage
-	{
-		[JsonProperty("s")]
-		public int Sequence { get; set; }
-		[JsonProperty("t")]
-		public string Type { get; set; }
 	}
 }

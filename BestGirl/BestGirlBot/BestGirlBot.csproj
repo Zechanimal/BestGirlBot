@@ -143,6 +143,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\BestGirlClient.cs" />
+    <Compile Include="Client\BestGirlConfig.cs" />
     <Compile Include="Discord\Converters\NullableSnowflakeJsonConverter.cs" />
     <Compile Include="Discord\Converters\SnowflakeJsonConverter.cs" />
     <Compile Include="Discord\Gateway\GatewayMessageEventArgs.cs" />
@@ -174,6 +176,7 @@
     <Compile Include="Discord\Rest\Repositories\BaseRestRepository.cs" />
     <Compile Include="Discord\Rest\Repositories\Interfaces\IChannelRepository.cs" />
     <Compile Include="Discord\Rest\Repositories\Interfaces\IGatewayRepository.cs" />
+    <Compile Include="Discord\Rest\Repositories\Interfaces\IUserRepository.cs" />
     <Compile Include="Discord\Rest\RestClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

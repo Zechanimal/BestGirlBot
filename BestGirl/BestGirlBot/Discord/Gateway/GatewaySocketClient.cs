@@ -80,8 +80,6 @@ namespace BestGirlBot.Discord.Gateway
 						? Utility.Deflate(messageBytes)
 						: Encoding.UTF8.GetString(messageBytes, 0, messageBytes.Length);
 
-					Console.WriteLine($"Socket received message: {receivedMessage}");
-
 					var gatewayMessage = JsonConvert.DeserializeObject<GatewayMessage>(receivedMessage);
 					OnGatewayMessageReceived(new GatewayMessageEventArgs(gatewayMessage));
 
@@ -110,7 +108,6 @@ namespace BestGirlBot.Discord.Gateway
 							bool lastChunk = offset + chunkSize >= count;
 
 							var segment = new ArraySegment<byte>(bytes, offset, chunkSize);
-							Console.WriteLine($"Sending message: {Encoding.UTF8.GetString(segment.Array, 0, segment.Count)}");
 							await WebSocket.SendAsync(segment, WebSocketMessageType.Text, lastChunk, cancellationToken);
 
 							offset += chunkSize;

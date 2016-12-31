@@ -4,7 +4,7 @@ namespace BestGirlBot.Discord.Gateway.Messages
 {
 	public class Identify : GatewayMessage
 	{
-		public Identify(string token, object properties, bool compress, int largeThreshold)
+		public Identify(string token, object properties, bool compress, int largeThreshold, int shardId, int shardCount)
 		{
 			OpCode = GatewayOpCode.Identify;
 			Data = new IdentifyPayload
@@ -13,7 +13,7 @@ namespace BestGirlBot.Discord.Gateway.Messages
 				Properties = properties == null ? new { } : properties,
 				Compress = compress,
 				LargeThreshold = largeThreshold,
-				Shards = null
+				Shards = new[] { shardId, shardCount }
 			};
 		}
 	}
