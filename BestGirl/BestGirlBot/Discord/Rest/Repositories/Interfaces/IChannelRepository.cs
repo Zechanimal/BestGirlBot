@@ -1,6 +1,6 @@
 ﻿using BestGirlBot.Discord.Models;
 
-namespace BestGirlBot.Discord.Rest.Repositories
+namespace BestGirlBot.Discord.Rest.Repositories.Interfaces
 {
 	public interface IChannelRepository
 	{
