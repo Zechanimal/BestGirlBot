@@ -5,6 +5,10 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using BestGirlBot.Discord.Gateway.Payloads;
+using BestGirlBot.Discord.Gateway.Messages;
 
 namespace BestGirlBot.Discord.Gateway
 {
@@ -14,6 +18,15 @@ namespace BestGirlBot.Discord.Gateway
 		private ConcurrentQueue<string> Messages { get; }
 		private int MaxReceiveBytes = 4096;
 		private int MaxSendBytes = 4096;
+
+		public event EventHandler<GatewayMessageEventArgs> GatewayMessageReceived = delegate { };
+		private void OnGatewayMessageReceived(GatewayMessageEventArgs e)
+		{
+			if (GatewayMessageReceived != null)
+			{
+				GatewayMessageReceived(this, e);
+			}
+		}
 
 		public GatewaySocketClient()
 		{
@@ -30,6 +43,11 @@ namespace BestGirlBot.Discord.Gateway
 		public void SendMessage(string message)
 		{
 			Messages.Enqueue(message);
+		}
+
+		public void SendMessage(GatewayMessage message)
+		{
+			Messages.Enqueue(JsonConvert.SerializeObject(message));
 		}
 
 		private Task ReceiveAsync(CancellationToken cancellationToken)
@@ -63,6 +81,9 @@ namespace BestGirlBot.Discord.Gateway
 						: Encoding.UTF8.GetString(messageBytes, 0, messageBytes.Length);
 
 					Console.WriteLine($"Socket received message: {receivedMessage}");
+
+					var gatewayMessage = JsonConvert.DeserializeObject<GatewayMessage>(receivedMessage);
+					OnGatewayMessageReceived(new GatewayMessageEventArgs(gatewayMessage));
 
 					stream.Position = 0;
 					stream.SetLength(0);

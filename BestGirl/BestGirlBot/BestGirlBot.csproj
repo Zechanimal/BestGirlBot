@@ -144,7 +144,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Discord\Converters\SnowflakeJsonConverter.cs" />
+    <Compile Include="Discord\Gateway\GatewayMessageEventArgs.cs" />
+    <Compile Include="Discord\Gateway\GatewayOpCode.cs" />
+    <Compile Include="Discord\Gateway\GatewayMessage.cs" />
     <Compile Include="Discord\Gateway\GatewaySocketClient.cs" />
+    <Compile Include="Discord\Gateway\Messages\Heartbeat.cs" />
+    <Compile Include="Discord\Gateway\Messages\Identify.cs" />
+    <Compile Include="Discord\Gateway\Messages\RequestGuildMembers.cs" />
+    <Compile Include="Discord\Gateway\Payloads\HelloPayload.cs" />
+    <Compile Include="Discord\Gateway\Payloads\IdentifyPayload.cs" />
+    <Compile Include="Discord\Gateway\Payloads\RequestGuildMembersPayload.cs" />
     <Compile Include="Discord\Models\Channel.cs" />
     <Compile Include="Discord\Models\Connection.cs" />
     <Compile Include="Discord\Models\DMChannel.cs" />
