@@ -116,9 +116,9 @@ namespace BestGirlBot.Discord.Gateway
 							offset += chunkSize;
 						}
 					}
-				}
 
-				await Task.Delay(100, cancellationToken).ConfigureAwait(false);
+					await Task.Delay(100, cancellationToken).ConfigureAwait(false);
+				}
 			});
 		}
 	}
