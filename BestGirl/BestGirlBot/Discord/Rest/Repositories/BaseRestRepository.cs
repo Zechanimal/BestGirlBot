@@ -24,14 +24,35 @@ namespace BestGirlBot.Discord.Rest.Repositories
 			return await Client.GetAsync(endpoint);
 		}
 
+		protected async Task<T> GetAsync<T>(string endpoint)
+		{
+			var response = await GetAsync(endpoint);
+			var body = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<T>(body);
+		}
+
 		protected async Task<HttpResponseMessage> PostJsonAsync(string endpoint, object body)
 		{
 			return await Client.PostAsync(endpoint, new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
 		}
 
+		protected async Task<T> PostJsonAsync<T>(string endpoint, object body)
+		{
+			var response = await PostJsonAsync(endpoint, body);
+			var content = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<T>(content);
+		}
+
 		protected async Task<HttpResponseMessage> PutJsonAsync(string endpoint, object body)
 		{
 			return await Client.PutAsync(endpoint, new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
+		}
+
+		protected async Task<T> PutJsonAsync<T>(string endpoint, object body)
+		{
+			var response = await PutJsonAsync(endpoint, body);
+			var content = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<T>(content);
 		}
 
 		protected async Task<HttpResponseMessage> PatchJsonAsync(string endpoint, object body)
@@ -44,9 +65,23 @@ namespace BestGirlBot.Discord.Rest.Repositories
 			return await Client.SendAsync(request);
 		}
 
+		protected async Task<T> PatchJsonAsync<T>(string endpoint, object body)
+		{
+			var response = await PatchJsonAsync(endpoint, body);
+			var content = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<T>(content);
+		}
+
 		protected async Task<HttpResponseMessage> DeleteAsync(string endpoint)
 		{
 			return await Client.DeleteAsync(endpoint);
+		}
+
+		protected async Task<T> DeleteAsync<T>(string endpoint)
+		{
+			var response = await DeleteAsync(endpoint);
+			var content = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<T>(content);
 		}
 	}
 }

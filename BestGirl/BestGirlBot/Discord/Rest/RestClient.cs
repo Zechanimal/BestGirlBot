@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace BestGirlBot.Discord.Rest
 {
-	public class RestClient : BaseRestRepository, IChannelRepository, IGatewayRepository
+	public class RestClient : BaseRestRepository, IChannelRepository, IGatewayRepository, IUserRepository
 	{
 		public RestClient(string baseUri, string authToken, string userAgent) : base(baseUri, authToken, userAgent)
 		{
@@ -22,6 +22,16 @@ namespace BestGirlBot.Discord.Rest
 		}
 
 		public void CreateChannelMessage(ulong channelId, string content)
+		{
+			throw new NotImplementedException();
+		}
+
+		public DMChannel CreateDM(ulong recipientId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public DMChannel CreateGroupDM(string[] accessTokens, IDictionary<ulong, string> nicks)
 		{
 			throw new NotImplementedException();
 		}
@@ -56,12 +66,39 @@ namespace BestGirlBot.Discord.Rest
 			throw new NotImplementedException();
 		}
 
+		public User GetCurrentUser()
+		{
+			return GetAsync<User>("users/@me").Result;
+		}
+
+		public UserGuild[] GetCurrentUserGuilds()
+		{
+			throw new NotImplementedException();
+		}
+
 		public GatewayObject GetGateway()
 		{
-			var response = GetAsync("gateway").Result;
-			var body = response.Content.ReadAsStringAsync().Result;
+			return GetAsync<GatewayObject>("gateway/bot").Result;
+		}
 
-			return JsonConvert.DeserializeObject<GatewayObject>(body);
+		public User GetUser(ulong userId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Connection[] GetUserConnections()
+		{
+			throw new NotImplementedException();
+		}
+
+		public DMChannel[] GetUserDMs()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void LeaveGuild(ulong guildId)
+		{
+			throw new NotImplementedException();
 		}
 
 		public void ModifyChannel(ulong channelId, string name, int position)
@@ -77,6 +114,15 @@ namespace BestGirlBot.Discord.Rest
 		public void ModifyChannel(ulong channelId, string name, int position, int bitrate, int userLimit)
 		{
 			throw new NotImplementedException();
+		}
+
+		public User ModifyCurrentUser(string username, string avatarData)
+		{
+			Dictionary<string, string> data = new Dictionary<string, string>();
+			if (username != null) data.Add("username", username);
+			if (avatarData != null) data.Add("avatar", avatarData);
+
+			return PatchJsonAsync<User>("users/@me", data).Result;
 		}
 	}
 }
