@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using BestGirlBot.Discord.Gateway;
 using BestGirlBot.Discord.Gateway.Messages;
 using BestGirlBot.Discord.Gateway.Payloads;
+using BestGirlBot.Discord.Rest;
 
 namespace BestGirlBot
 {
@@ -17,22 +18,14 @@ namespace BestGirlBot
 		static void Main(string[] args)
 		{
 			AuthToken = ConfigurationManager.AppSettings["AppBotToken"].ToString();
-			HttpClient client = new HttpClient();
-			client.BaseAddress = new Uri("https://discordapp.com/api/");
-			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bot", AuthToken);
-			client.DefaultRequestHeaders.UserAgent.ParseAdd("DiscordBot (BestGirlBot, 0.1)");
 
-			// Example endpoint
-			var response = client.GetAsync("gateway").Result;
-			var body = response.Content.ReadAsStringAsync().Result;
-
-			var getGatewayResponseDefinition = new { url = "" };
-			var obj = JsonConvert.DeserializeAnonymousType(body, getGatewayResponseDefinition);
-			Console.WriteLine($"Gateway url: {obj.url}");
+			RestClient restClient = new RestClient("https://discordapp.com/api/", AuthToken, "(DiscordBot BestGirlBot, 0.1)");
+			var gateway = restClient.GetGateway();
+			Console.WriteLine($"Gateway url: {gateway.Url}");
 
 			GatewaySocketClient socket = new GatewaySocketClient();
 			socket.GatewayMessageReceived += HandleGatewayMessage;
-			socket.Connect(obj.url, CancellationToken.None).Wait();
+			socket.Connect(gateway.Url, CancellationToken.None).Wait();
 
 			Console.ReadLine();
 		}
