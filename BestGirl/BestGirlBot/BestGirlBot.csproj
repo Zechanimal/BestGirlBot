@@ -170,6 +170,7 @@
     <Compile Include="Discord\Models\Role.cs" />
     <Compile Include="Discord\Models\User.cs" />
     <Compile Include="Discord\Models\UserGuild.cs" />
+    <Compile Include="Discord\Rest\Repositories\BaseRestRepository.cs" />
     <Compile Include="Discord\Rest\Repositories\Interfaces\IChannelRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
