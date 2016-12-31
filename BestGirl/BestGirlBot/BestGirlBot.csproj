@@ -143,6 +143,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Discord\Converters\NullableSnowflakeJsonConverter.cs" />
     <Compile Include="Discord\Converters\SnowflakeJsonConverter.cs" />
     <Compile Include="Discord\Gateway\GatewayMessageEventArgs.cs" />
     <Compile Include="Discord\Gateway\GatewayOpCode.cs" />
@@ -164,10 +165,12 @@
     <Compile Include="Discord\Models\GuildTextChannel.cs" />
     <Compile Include="Discord\Models\GuildVoiceChannel.cs" />
     <Compile Include="Discord\Models\Integration.cs" />
+    <Compile Include="Discord\Models\Message.cs" />
     <Compile Include="Discord\Models\Permissions.cs" />
     <Compile Include="Discord\Models\Role.cs" />
     <Compile Include="Discord\Models\User.cs" />
     <Compile Include="Discord\Models\UserGuild.cs" />
+    <Compile Include="Discord\Rest\Repositories\IChannelRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
