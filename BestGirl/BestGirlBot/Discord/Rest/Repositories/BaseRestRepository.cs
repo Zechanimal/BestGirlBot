@@ -10,6 +10,7 @@ namespace BestGirlBot.Discord.Rest.Repositories
 	public class BaseRestRepository
 	{
 		protected HttpClient Client { get; set; }
+		protected static readonly HttpMethod PatchMethod = new HttpMethod("PATCH");
 
 		public BaseRestRepository(string baseUri, string authToken, string userAgent)
 		{
@@ -57,7 +58,7 @@ namespace BestGirlBot.Discord.Rest.Repositories
 
 		protected async Task<HttpResponseMessage> PatchJsonAsync(string endpoint, object body)
 		{
-			var request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint)
+			var request = new HttpRequestMessage(PatchMethod, endpoint)
 			{
 				Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json")
 			};
