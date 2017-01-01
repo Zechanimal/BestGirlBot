@@ -32,7 +32,7 @@ namespace BestGirlBot.Client
 
 		public async Task Connect()
 		{
-			var gatewayObject = RestClient.GetGateway();
+			var gatewayObject = RestClient.GetGatewayAsync().Result;
 			var gatewayUrl = gatewayObject.Url;
 			_shardCount = gatewayObject.Shards;
 

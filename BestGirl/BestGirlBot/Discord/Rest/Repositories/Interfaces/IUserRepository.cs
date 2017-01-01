@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Rest.Repositories.Interfaces
 {
 	public interface IUserRepository
 	{
-		User GetCurrentUser();
-		User GetUser(ulong userId);
-		User ModifyCurrentUser(string username, string avatarData);
-		UserGuild[] GetCurrentUserGuilds();
-		void LeaveGuild(ulong guildId);
-		DMChannel[] GetUserDMs();
-		DMChannel CreateDM(ulong recipientId);
-		DMChannel CreateGroupDM(string[] accessTokens, IDictionary<ulong, string> nicks);
-		Connection[] GetUserConnections();
+		Task<User> GetCurrentUserAsync();
+		Task<User> GetUserAsync(ulong userId);
+		Task<User> ModifyCurrentUserAsync(string username, string avatarData);
+		Task<UserGuild[]> GetCurrentUserGuildsAsync();
+		Task LeaveGuildAsync(ulong guildId);
+		Task<DMChannel[]> GetUserDmsAsync();
+		Task<DMChannel> CreateDmAsync(ulong recipientId);
+		Task<DMChannel> CreateGroupDmAsync(string[] accessTokens, IDictionary<ulong, string> nicks);
+		Task<Connection[]> GetUserConnectionsAsync();
 	}
 }

@@ -1,19 +1,20 @@
-﻿using BestGirlBot.Discord.Models;
+﻿using System.Threading.Tasks;
+using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Rest.Repositories.Interfaces
 {
 	public interface IChannelRepository
 	{
-		Channel GetChannel(ulong channelId);
-		void ModifyChannel(ulong channelId, string name, int position);
-		void ModifyChannel(ulong channelId, string name, int position, string topic);
-		void ModifyChannel(ulong channelId, string name, int position, int bitrate, int userLimit);
-		void DeleteChannel(ulong channelId);
-		Message[] GetChannelMessages(ulong channelId);
-		Message GetChannelMessage(ulong channelId, ulong messageId);
-		void CreateChannelMessage(ulong channelId, string content);
-		void EditMessage(ulong channelId, ulong messageId, string content);
-		void DeleteMessage(ulong channelId, ulong messageId);
-		void BulkDeleteMessages(ulong channelId, ulong[] messageIds);
+		Task<Channel> GetChannelAsync(ulong channelId);
+		Task ModifyChannelAsync(ulong channelId, string name, int position);
+		Task ModifyChannelAsync(ulong channelId, string name, int position, string topic);
+		Task ModifyChannelAsync(ulong channelId, string name, int position, int bitrate, int userLimit);
+		Task DeleteChannelAsync(ulong channelId);
+		Task<Message[]> GetChannelMessagesAsync(ulong channelId);
+		Task<Message> GetChannelMessageAsync(ulong channelId, ulong messageId);
+		Task CreateChannelMessageAsync(ulong channelId, string content);
+		Task EditMessageAsync(ulong channelId, ulong messageId, string content);
+		Task DeleteMessageAsync(ulong channelId, ulong messageId);
+		Task BulkDeleteMessagesAsync(ulong channelId, ulong[] messageIds);
 	}
 }

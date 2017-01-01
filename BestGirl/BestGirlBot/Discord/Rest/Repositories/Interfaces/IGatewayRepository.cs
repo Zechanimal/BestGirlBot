@@ -1,9 +1,10 @@
-﻿using BestGirlBot.Discord.Models;
+﻿using System.Threading.Tasks;
+using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Rest.Repositories.Interfaces
 {
 	public interface IGatewayRepository
 	{
-		GatewayObject GetGateway();
+		Task<GatewayObject> GetGatewayAsync();
 	}
 }

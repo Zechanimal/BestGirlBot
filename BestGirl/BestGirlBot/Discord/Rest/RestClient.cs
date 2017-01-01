@@ -16,113 +16,113 @@ namespace BestGirlBot.Discord.Rest
 		{
 		}
 
-		public void BulkDeleteMessages(ulong channelId, ulong[] messageIds)
+		public Task BulkDeleteMessagesAsync(ulong channelId, ulong[] messageIds)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void CreateChannelMessage(ulong channelId, string content)
+		public Task CreateChannelMessageAsync(ulong channelId, string content)
 		{
 			throw new NotImplementedException();
 		}
 
-		public DMChannel CreateDM(ulong recipientId)
+		public Task<DMChannel> CreateDmAsync(ulong recipientId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public DMChannel CreateGroupDM(string[] accessTokens, IDictionary<ulong, string> nicks)
+		public Task<DMChannel> CreateGroupDmAsync(string[] accessTokens, IDictionary<ulong, string> nicks)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void DeleteChannel(ulong channelId)
+		public Task DeleteChannelAsync(ulong channelId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void DeleteMessage(ulong channelId, ulong messageId)
+		public Task DeleteMessageAsync(ulong channelId, ulong messageId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void EditMessage(ulong channelId, ulong messageId, string content)
+		public Task EditMessageAsync(ulong channelId, ulong messageId, string content)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Channel GetChannel(ulong channelId)
+		public async Task<Channel> GetChannelAsync(ulong channelId)
+		{
+			return await GetAsync<Channel>($"channels/{channelId}");
+		}
+
+		public async Task<Message> GetChannelMessageAsync(ulong channelId, ulong messageId)
+		{
+			return await GetAsync<Message>($"channels/{channelId}/messages/{messageId}");
+		}
+
+		public Task<Message[]> GetChannelMessagesAsync(ulong channelId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Message GetChannelMessage(ulong channelId, ulong messageId)
+		public async Task<User> GetCurrentUserAsync()
+		{
+			return await GetAsync<User>($"users/@me");
+		}
+
+		public async Task<UserGuild[]> GetCurrentUserGuildsAsync()
+		{
+			return await GetAsync<UserGuild[]>($"users/@me/guilds");
+		}
+
+		public async Task<GatewayObject> GetGatewayAsync()
+		{
+			return await GetAsync<GatewayObject>($"gateway/bot");
+		}
+
+		public async Task<User> GetUserAsync(ulong userId)
+		{
+			return await GetAsync<User>($"users/{userId}");
+		}
+
+		public async Task<Connection[]> GetUserConnectionsAsync()
+		{
+			return await GetAsync<Connection[]>($"users/@me/connections");
+		}
+
+		public async Task<DMChannel[]> GetUserDmsAsync()
+		{
+			return await GetAsync<DMChannel[]>($"users/@me/channels");
+		}
+
+		public Task LeaveGuildAsync(ulong guildId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Message[] GetChannelMessages(ulong channelId)
+		public Task ModifyChannelAsync(ulong channelId, string name, int position)
 		{
 			throw new NotImplementedException();
 		}
 
-		public User GetCurrentUser()
-		{
-			return GetAsync<User>("users/@me").Result;
-		}
-
-		public UserGuild[] GetCurrentUserGuilds()
+		public Task ModifyChannelAsync(ulong channelId, string name, int position, string topic)
 		{
 			throw new NotImplementedException();
 		}
 
-		public GatewayObject GetGateway()
-		{
-			return GetAsync<GatewayObject>("gateway/bot").Result;
-		}
-
-		public User GetUser(ulong userId)
+		public Task ModifyChannelAsync(ulong channelId, string name, int position, int bitrate, int userLimit)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Connection[] GetUserConnections()
-		{
-			throw new NotImplementedException();
-		}
-
-		public DMChannel[] GetUserDMs()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void LeaveGuild(ulong guildId)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void ModifyChannel(ulong channelId, string name, int position)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void ModifyChannel(ulong channelId, string name, int position, string topic)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void ModifyChannel(ulong channelId, string name, int position, int bitrate, int userLimit)
-		{
-			throw new NotImplementedException();
-		}
-
-		public User ModifyCurrentUser(string username, string avatarData)
+		public async Task<User> ModifyCurrentUserAsync(string username, string avatarData)
 		{
 			Dictionary<string, string> data = new Dictionary<string, string>();
 			if (username != null) data.Add("username", username);
 			if (avatarData != null) data.Add("avatar", avatarData);
 
-			return PatchJsonAsync<User>("users/@me", data).Result;
+			return await PatchJsonAsync<User>("users/@me", data);
 		}
 	}
 }
