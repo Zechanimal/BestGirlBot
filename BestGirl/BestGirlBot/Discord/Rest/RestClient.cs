@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using BestGirlBot.Discord.Models;
 using BestGirlBot.Discord.Rest.Repositories;
 using BestGirlBot.Discord.Rest.Repositories.Interfaces;
@@ -52,7 +54,19 @@ namespace BestGirlBot.Discord.Rest
 
 		public async Task<Channel> GetChannelAsync(ulong channelId)
 		{
-			return await GetAsync<Channel>($"channels/{channelId}");
+			var response = await GetAsync($"channels/{channelId}");
+			var body = await response.Content.ReadAsStringAsync();
+			var obj = JsonConvert.DeserializeObject(body) as JObject;
+			var channel = obj.ToObject<Channel>();
+			if (channel.IsPrivate)
+			{
+				return obj.ToObject<DMChannel>();
+			}
+			else
+			{
+				var guildChannel = obj.ToObject<GuildChannel>();
+				return guildChannel.Type == "text" ? (Channel)obj.ToObject<GuildTextChannel>() : obj.ToObject<GuildVoiceChannel>();
+			}
 		}
 
 		public async Task<Message> GetChannelMessageAsync(ulong channelId, ulong messageId)
