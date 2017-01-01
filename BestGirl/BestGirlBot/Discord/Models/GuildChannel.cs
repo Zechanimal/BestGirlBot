@@ -17,6 +17,12 @@ namespace BestGirlBot.Discord.Models
 			public Permissions Deny { get; set; }
 		}
 
+		public class Types
+		{
+			public static readonly string Text = "text";
+			public static readonly string Voice = "voice";
+		}
+
 		[JsonProperty("guild_id"), JsonConverter(typeof(SnowflakeJsonConverter))]
 		public ulong GuildId { get; set; }
 		[JsonProperty("name")]

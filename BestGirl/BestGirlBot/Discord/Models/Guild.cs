@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using BestGirlBot.Discord.Converters;
 
 namespace BestGirlBot.Discord.Models
@@ -37,5 +38,19 @@ namespace BestGirlBot.Discord.Models
 		public int MfaLevel { get; set; }
 		[JsonProperty("member_count")]
 		public int MemberCount { get; set; }
+		[JsonProperty("joined_at")]
+		public DateTime JoinedAt { get; set; }
+		[JsonProperty("large")]
+		public bool Large { get; set; }
+		[JsonProperty("unavailable")]
+		public bool Unavailable { get; set; }
+		[JsonProperty("members")]
+		public GuildMember Members { get; set; }
+		[JsonProperty("channels")]
+		public GuildChannel Channels { get; set; }
+		[JsonProperty("presences")]
+		public Presence[] Presences { get; set; }
+		[JsonProperty("voice_states")]
+		public VoiceState[] VoiceStates { get; set; }
 	}
 }

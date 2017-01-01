@@ -1,4 +1,5 @@
 ﻿using BestGirlBot.Discord.Gateway.Payloads;
+using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Gateway.Messages
 {
@@ -10,7 +11,7 @@ namespace BestGirlBot.Discord.Gateway.Messages
 			Data = new StatusUpdatePayload
 			{
 				IdleSince = idleSince,
-				Game = new StatusUpdatePayload.GameObject
+				Game = new GameObject
 				{
 					Name = gameName
 				}

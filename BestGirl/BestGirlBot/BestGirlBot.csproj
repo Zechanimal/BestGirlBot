@@ -163,6 +163,7 @@
     <Compile Include="Discord\Models\Connection.cs" />
     <Compile Include="Discord\Models\DMChannel.cs" />
     <Compile Include="Discord\Models\Emoji.cs" />
+    <Compile Include="Discord\Models\GameObject.cs" />
     <Compile Include="Discord\Models\GatewayObject.cs" />
     <Compile Include="Discord\Models\Guild.cs" />
     <Compile Include="Discord\Models\GuildChannel.cs" />
@@ -172,9 +173,12 @@
     <Compile Include="Discord\Models\Integration.cs" />
     <Compile Include="Discord\Models\Message.cs" />
     <Compile Include="Discord\Models\Permissions.cs" />
+    <Compile Include="Discord\Models\Presence.cs" />
     <Compile Include="Discord\Models\Role.cs" />
     <Compile Include="Discord\Models\User.cs" />
     <Compile Include="Discord\Models\UserGuild.cs" />
+    <Compile Include="Discord\Models\VoiceRegion.cs" />
+    <Compile Include="Discord\Models\VoiceState.cs" />
     <Compile Include="Discord\Rest\Repositories\BaseRestRepository.cs" />
     <Compile Include="Discord\Rest\Repositories\Interfaces\IChannelRepository.cs" />
     <Compile Include="Discord\Rest\Repositories\Interfaces\IGatewayRepository.cs" />

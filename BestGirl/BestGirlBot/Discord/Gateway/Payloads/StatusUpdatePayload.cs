@@ -1,15 +1,10 @@
 ﻿using Newtonsoft.Json;
+using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Gateway.Payloads
 {
 	public class StatusUpdatePayload
 	{
-		public class GameObject
-		{
-			[JsonProperty("name")]
-			public string Name { get; set; }
-		}
-
 		[JsonProperty("idle_since")]
 		public int? IdleSince { get; set; }
 		[JsonProperty("game")]
