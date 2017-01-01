@@ -21,7 +21,7 @@ namespace BestGirlBot.Discord.Rest
 			throw new NotImplementedException();
 		}
 
-		public Task CreateChannelMessageAsync(ulong channelId, string content)
+		public Task<Message> CreateMessageAsync(ulong channelId, string content)
 		{
 			throw new NotImplementedException();
 		}
@@ -36,7 +36,7 @@ namespace BestGirlBot.Discord.Rest
 			throw new NotImplementedException();
 		}
 
-		public Task DeleteChannelAsync(ulong channelId)
+		public Task<Channel> DeleteChannelAsync(ulong channelId)
 		{
 			throw new NotImplementedException();
 		}
@@ -46,7 +46,7 @@ namespace BestGirlBot.Discord.Rest
 			throw new NotImplementedException();
 		}
 
-		public Task EditMessageAsync(ulong channelId, ulong messageId, string content)
+		public Task<Message> EditMessageAsync(ulong channelId, ulong messageId, string content)
 		{
 			throw new NotImplementedException();
 		}
@@ -101,17 +101,17 @@ namespace BestGirlBot.Discord.Rest
 			throw new NotImplementedException();
 		}
 
-		public Task ModifyChannelAsync(ulong channelId, string name, int position)
+		public Task<GuildChannel> ModifyChannelAsync(ulong channelId, string name, int position)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task ModifyChannelAsync(ulong channelId, string name, int position, string topic)
+		public Task<GuildTextChannel> ModifyChannelAsync(ulong channelId, string name, int position, string topic)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task ModifyChannelAsync(ulong channelId, string name, int position, int bitrate, int userLimit)
+		public Task<GuildVoiceChannel> ModifyChannelAsync(ulong channelId, string name, int position, int bitrate, int userLimit)
 		{
 			throw new NotImplementedException();
 		}
