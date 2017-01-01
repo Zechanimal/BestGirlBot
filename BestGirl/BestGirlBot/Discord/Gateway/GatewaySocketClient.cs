@@ -69,7 +69,6 @@ namespace BestGirlBot.Discord.Gateway
 					stream.Write(segment.Array, 0, result.Count);
 					while (!result.EndOfMessage)
 					{
-						segment = new ArraySegment<byte>(new byte[MaxReceiveBytes]);
 						result = await WebSocket.ReceiveAsync(segment, cancellationToken);
 						stream.Write(segment.Array, 0, result.Count);
 					}

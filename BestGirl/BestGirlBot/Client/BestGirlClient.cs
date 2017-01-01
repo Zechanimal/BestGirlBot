@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BestGirlBot.Discord.Gateway;
 using BestGirlBot.Discord.Gateway.Payloads;
 using BestGirlBot.Discord.Gateway.Messages;
+using BestGirlBot.Discord.Models;
 using BestGirlBot.Discord.Rest;
 
 namespace BestGirlBot.Client
@@ -22,10 +24,14 @@ namespace BestGirlBot.Client
 		private bool _handshakeCompleted = false;
 		private int? _heartbeatInterval = null;
 
+		private ulong? _botUserId = null;
+
 		public BestGirlClient(BestGirlConfig config)
 		{
 			Config = config;
 			RestClient = new RestClient(DiscordHttpApiBaseUri, Config.AuthToken, Config.UserAgent);
+			_botUserId = RestClient.GetCurrentUserAsync().Result.Id;
+
 			GatewaySocketClient = new GatewaySocketClient();
 			GatewaySocketClient.GatewayMessageReceived += HandleGatewayMessage;
 		}
@@ -86,6 +92,18 @@ namespace BestGirlBot.Client
 				case "READY":
 					_handshakeCompleted = true;
 					Task.Run(async () => await SendHeartbeat());
+					break;
+				case "MESSAGE_CREATE":
+					var msgData = message.DataAs<Message>();
+					if (msgData.Author.Id != _botUserId)
+					{
+						if (msgData.Mentions.Where(u => u.Id == _botUserId).Count() > 0)
+						{
+							string authorMention = Message.MentionUser(msgData.Author.Id);
+							string response = $"Stop poking me, {authorMention}. I'm not fully functional.";
+							RestClient.CreateMessageAsync(msgData.ChannelId, response).Wait();
+						}
+					}
 					break;
 				default:
 					break;

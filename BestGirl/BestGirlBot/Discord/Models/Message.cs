@@ -36,5 +36,30 @@ namespace BestGirlBot.Discord.Models
 		public bool Pinned { get; set; }
 		[JsonProperty("webhook_id")]
 		public string WebhookId { get; set; }
+
+		public static string MentionUser(ulong id)
+		{
+			return $"<@{id}>";
+		}
+
+		public static string MentionUserNick(ulong id)
+		{
+			return $"<@!{id}>";
+		}
+
+		public static string MentionChannel(ulong id)
+		{
+			return $"<#{id}>";
+		}
+
+		public static string MentionRole(ulong id)
+		{
+			return $"<@&{id}>";
+		}
+
+		public static string CustomEmoji(string name, ulong id)
+		{
+			return $"<:{name}:{id}>";
+		}
 	}
 }
