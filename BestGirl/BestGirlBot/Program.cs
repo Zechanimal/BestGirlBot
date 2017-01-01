@@ -1,15 +1,7 @@
 ﻿using System;
 using System.Configuration;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using BestGirlBot.Client;
-using BestGirlBot.Discord.Gateway;
-using BestGirlBot.Discord.Gateway.Messages;
-using BestGirlBot.Discord.Gateway.Payloads;
-using BestGirlBot.Discord.Rest;
 
 namespace BestGirlBot
 {

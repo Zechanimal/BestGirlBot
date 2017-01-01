@@ -6,9 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using BestGirlBot.Discord.Gateway.Payloads;
-using BestGirlBot.Discord.Gateway.Messages;
 
 namespace BestGirlBot.Discord.Gateway
 {
