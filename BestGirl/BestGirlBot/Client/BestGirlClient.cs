@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ using BestGirlBot.Discord.Gateway.Payloads;
 using BestGirlBot.Discord.Gateway.Messages;
 using BestGirlBot.Discord.Models;
 using BestGirlBot.Discord.Rest;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace BestGirlBot.Client
 {
@@ -26,6 +29,8 @@ namespace BestGirlBot.Client
 
 		private ulong? _botUserId = null;
 
+		private ConcurrentDictionary<ulong, Models.Guild> _guilds;
+
 		public BestGirlClient(BestGirlConfig config)
 		{
 			Config = config;
@@ -34,6 +39,8 @@ namespace BestGirlBot.Client
 
 			GatewaySocketClient = new GatewaySocketClient();
 			GatewaySocketClient.GatewayMessageReceived += HandleGatewayMessage;
+
+			_guilds = new ConcurrentDictionary<ulong, Models.Guild>();
 		}
 
 		public async Task Connect()
@@ -87,24 +94,48 @@ namespace BestGirlBot.Client
 		private void HandleGatewayDispatchEvent(GatewayMessage message)
 		{
 			_previousSequence = message.Sequence;
+			Console.WriteLine($"Message received of type {message.Type}");
 			switch(message.Type)
 			{
 				case "READY":
-					_handshakeCompleted = true;
-					Task.Run(async () => await SendHeartbeat());
-					break;
-				case "MESSAGE_CREATE":
-					var msgData = message.DataAs<Message>();
-					if (msgData.Author.Id != _botUserId)
 					{
-						if (msgData.Mentions.Where(u => u.Id == _botUserId).Count() > 0)
+						_handshakeCompleted = true;
+						var msgData = message.DataAs<ReadyPayload>();
+						foreach (var guild in msgData.Guilds)
 						{
-							string authorMention = Message.MentionUser(msgData.Author.Id);
-							string response = $"Stop poking me, {authorMention}. I'm not fully functional.";
-							RestClient.CreateMessageAsync(msgData.ChannelId, response).Wait();
+							_guilds[guild.Id] = new Models.Guild(guild.Id);
 						}
+
+						Task.Run(async () => await SendHeartbeat());
+						break;
 					}
-					break;
+				case "MESSAGE_CREATE":
+					{
+						var msgData = message.DataAs<Message>();
+						if (msgData.Author.Id != _botUserId)
+						{
+							if (msgData.Mentions.Where(u => u.Id == _botUserId).Count() > 0)
+							{
+								string authorMention = Message.MentionUser(msgData.Author.Id);
+								string response = $"Stop poking me, {authorMention}. I'm not fully functional.";
+								RestClient.CreateMessageAsync(msgData.ChannelId, response).Wait();
+							}
+						}
+						break;
+					}
+				case "GUILD_CREATE":
+					{
+						var guild = message.DataAs<Guild>();
+						if (_guilds.ContainsKey(guild.Id))
+						{
+							_guilds[guild.Id].Create(guild);
+						} else
+						{
+							_guilds[guild.Id] = new Models.Guild(guild.Id);
+							_guilds[guild.Id].Create(guild);
+						}
+						break;
+					}
 				default:
 					break;
 			}
