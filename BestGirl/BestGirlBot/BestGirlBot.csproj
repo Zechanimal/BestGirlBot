@@ -152,6 +152,8 @@
     <Compile Include="Discord\Converters\GenericArrayConverter.cs" />
     <Compile Include="Discord\Converters\NullableSnowflakeJsonConverter.cs" />
     <Compile Include="Discord\Converters\SnowflakeJsonConverter.cs" />
+    <Compile Include="Discord\Gateway\EventMessage.cs" />
+    <Compile Include="Discord\Gateway\GatewayEvent.cs" />
     <Compile Include="Discord\Gateway\GatewayMessageEventArgs.cs" />
     <Compile Include="Discord\Gateway\GatewayOpCode.cs" />
     <Compile Include="Discord\Gateway\GatewayMessage.cs" />
@@ -196,6 +198,7 @@
     <Compile Include="Discord\Rest\Repositories\Interfaces\IGuildRepository.cs" />
     <Compile Include="Discord\Rest\Repositories\Interfaces\IUserRepository.cs" />
     <Compile Include="Discord\Rest\RestClient.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
@@ -204,7 +207,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Discord\Gateway\Events\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

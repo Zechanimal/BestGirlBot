@@ -123,6 +123,23 @@ namespace BestGirlBot.Client
 						}
 						break;
 					}
+				case "CHANNEL_CREATE":
+					{
+						var channel = message.DataAs<Channel>();
+						if (channel.IsPrivate)
+						{
+							var dmChannel = message.DataAs<DMChannel>();
+						}
+						else
+						{
+							var guildChannel = message.DataAs<GuildChannel>();
+							if (guildChannel.Type == GuildChannel.Types.Text)
+								_guilds[guildChannel.GuildId].CreateTextChannel(message.DataAs<GuildTextChannel>());
+							else
+								_guilds[guildChannel.GuildId].CreateVoiceChannel(message.DataAs<GuildVoiceChannel>());
+						}
+						break;
+					}
 				case "GUILD_CREATE":
 					{
 						var guild = message.DataAs<Guild>();
@@ -133,6 +150,15 @@ namespace BestGirlBot.Client
 						{
 							_guilds[guild.Id] = new Models.Guild(this, guild.Id);
 							_guilds[guild.Id].Create(guild);
+						}
+						break;
+					}
+				case "GUILD_UPDATE":
+					{
+						var guild = message.DataAs<Guild>();
+						if (_guilds.ContainsKey(guild.Id))
+						{
+							_guilds[guild.Id].Update(guild);
 						}
 						break;
 					}

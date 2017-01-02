@@ -93,5 +93,21 @@ namespace BestGirlBot.Client.Models
 				Owner = owner;
 			}
 		}
+
+		public void Update(DiscordGuild guildModel)
+		{
+			Name = guildModel.Name;
+			Available = !guildModel.Unavailable;
+		}
+
+		public void CreateTextChannel(DiscordGuildChannel channel)
+		{
+			_channels[channel.Id] = new Channel(Client, channel.Id, this, channel.Name, Channel.Types.Text);
+		}
+
+		public void CreateVoiceChannel(DiscordGuildChannel channel)
+		{
+			_channels[channel.Id] = new Channel(Client, channel.Id, this, channel.Name, Channel.Types.Voice);
+		}
 	}
 }
