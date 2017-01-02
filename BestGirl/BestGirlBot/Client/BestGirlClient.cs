@@ -96,9 +96,9 @@ namespace BestGirlBot.Client
 		{
 			_previousSequence = message.Sequence;
 			Console.WriteLine($"Message received of type {message.Type}");
-			switch(message.Type)
+			switch(message.Type.ToEnumFromDescription<GatewayEvent>())
 			{
-				case "READY":
+				case GatewayEvent.Ready:
 					{
 						_handshakeCompleted = true;
 						var msgData = message.DataAs<ReadyPayload>();
@@ -110,7 +110,7 @@ namespace BestGirlBot.Client
 						Task.Run(async () => await SendHeartbeat());
 						break;
 					}
-				case "MESSAGE_CREATE":
+				case GatewayEvent.MessageCreate:
 					{
 						var msgData = message.DataAs<Message>();
 						if (msgData.Author.Id != _botUserId)
@@ -124,7 +124,7 @@ namespace BestGirlBot.Client
 						}
 						break;
 					}
-				case "CHANNEL_CREATE":
+				case GatewayEvent.ChannelCreate:
 					{
 						var channel = message.DataAs<Channel>();
 						if (channel.IsPrivate)
@@ -136,7 +136,7 @@ namespace BestGirlBot.Client
 						}
 						break;
 					}
-				case "GUILD_CREATE":
+				case GatewayEvent.GuildCreate:
 					{
 						var guild = message.DataAs<Guild>();
 						if (_guilds.ContainsKey(guild.Id))
@@ -149,7 +149,7 @@ namespace BestGirlBot.Client
 						}
 						break;
 					}
-				case "GUILD_UPDATE":
+				case GatewayEvent.GuildUpdate:
 					{
 						var guild = message.DataAs<Guild>();
 						if (_guilds.ContainsKey(guild.Id))
