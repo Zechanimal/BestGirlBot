@@ -2,14 +2,11 @@
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class GuildBanAddEvent : EventMessage<User>
+	public class GuildBanAddEvent : EventMessage<GuildBanAddEvent, User>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
 				return GatewayEvent.GuildBanAdd;
-			}
 		}
 	}
 }

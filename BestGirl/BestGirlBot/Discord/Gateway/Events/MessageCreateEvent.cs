@@ -2,14 +2,11 @@
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class MessageCreateEvent : EventMessage<Message>
+	public class MessageCreateEvent : EventMessage<MessageCreateEvent, Message>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.MessageCreate;
-			}
+			return GatewayEvent.MessageCreate;
 		}
 	}
 }

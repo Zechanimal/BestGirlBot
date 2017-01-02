@@ -2,14 +2,11 @@
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class ResumedEvent : EventMessage<ResumedPayload>
+	public class ResumedEvent : EventMessage<ResumedEvent, ResumedPayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.Resumed;
-			}
+			return GatewayEvent.Resumed;
 		}
 
 	}

@@ -3,14 +3,11 @@ using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class GuildEmojisUpdateEvent : EventMessage<GuildEmojisUpdatePayload>
+	public class GuildEmojisUpdateEvent : EventMessage<GuildEmojisUpdateEvent, GuildEmojisUpdatePayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.GuildEmojisUpdate;
-			}
+			return GatewayEvent.GuildEmojisUpdate;
 		}
 	}
 

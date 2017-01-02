@@ -5,14 +5,11 @@ using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class TypingStartEvent : EventMessage<TypingStartPayload>
+	public class TypingStartEvent : EventMessage<TypingStartEvent, TypingStartPayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.TypingStart;
-			}
+			return GatewayEvent.TypingStart;
 		}
 	}
 

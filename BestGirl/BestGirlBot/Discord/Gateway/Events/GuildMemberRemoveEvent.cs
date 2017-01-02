@@ -4,14 +4,11 @@ using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class GuildMemberRemoveEvent : EventMessage<GuildMemberRemovePayload>
+	public class GuildMemberRemoveEvent : EventMessage<GuildMemberRemoveEvent, GuildMemberRemovePayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.GuildMemberRemove;
-			}
+			return GatewayEvent.GuildMemberRemove;
 		}
 	}
 

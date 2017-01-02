@@ -1,15 +1,17 @@
-﻿using BestGirlBot.Extensions;
+﻿using Newtonsoft.Json.Linq;
+using BestGirlBot.Extensions;
 
 namespace BestGirlBot.Discord.Gateway
 {
-	public abstract class EventMessage<TPayload> : GatewayMessage
+	public abstract class EventMessage<TEventMessage, TPayload> : GatewayMessage where TEventMessage : EventMessage<TEventMessage, TPayload>
 	{
-		public TPayload EventData { get { return DataAs<TPayload>(); } }
-		public abstract GatewayEvent EventType { get; }
-		public string EventName { get { return EventType.GetDescription(); } }
-		public T CastTo<T>() where T : EventMessage<TPayload>
+		public TPayload EventData() { return DataAs<TPayload>(); }
+		public abstract GatewayEvent EventType();
+		public string EventName() { return EventType().GetDescription(); }
+
+		public static TEventMessage CreateEventMessage(GatewayMessage message)
 		{
-			return (T)this;
+			return (JObject.FromObject(message)).ToObject<TEventMessage>();
 		}
 	}
 }

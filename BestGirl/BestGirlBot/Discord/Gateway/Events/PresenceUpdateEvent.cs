@@ -4,14 +4,11 @@ using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class PresenceUpdateEvent : EventMessage<PresenceUpdatePayload>
+	public class PresenceUpdateEvent : EventMessage<PresenceUpdateEvent, PresenceUpdatePayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.PresenceUpdate;
-			}
+			return GatewayEvent.PresenceUpdate;
 		}
 	}
 

@@ -3,14 +3,11 @@ using BestGirlBot.Discord.Converters;
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class GuildRoleDeleteEvent : EventMessage<GuildRoleDeletePayload>
+	public class GuildRoleDeleteEvent : EventMessage<GuildRoleDeleteEvent, GuildRoleDeletePayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.GuildRoleDelete;
-			}
+			return GatewayEvent.GuildRoleDelete;
 		}
 	}
 

@@ -11,6 +11,7 @@ using BestGirlBot.Discord.Rest;
 using BestGirlBot.Extensions;
 using Newtonsoft.Json;
 using System.IO;
+using BestGirlBot.Discord.Gateway.Events;
 
 namespace BestGirlBot.Client
 {
@@ -100,8 +101,10 @@ namespace BestGirlBot.Client
 			{
 				case GatewayEvent.Ready:
 					{
+						var eventMessage = ReadyEvent.CreateEventMessage(message);
 						_handshakeCompleted = true;
-						var msgData = message.DataAs<ReadyPayload>();
+						//var msgData = message.DataAs<ReadyPayload>();
+						var msgData = eventMessage.EventData();
 						foreach (var guild in msgData.Guilds)
 						{
 							_guilds[guild.Id] = new Models.Guild(this, guild.Id);

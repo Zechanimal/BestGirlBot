@@ -3,14 +3,11 @@ using BestGirlBot.Discord.Converters;
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class MessageDeleteEvent : EventMessage<MessageDeletePayload>
+	public class MessageDeleteEvent : EventMessage<MessageDeleteEvent, MessageDeletePayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.MessageDelete;
-			}
+			return GatewayEvent.MessageDelete;
 		}
 	}
 

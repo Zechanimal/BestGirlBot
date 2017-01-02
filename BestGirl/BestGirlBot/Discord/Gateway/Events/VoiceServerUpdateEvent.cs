@@ -3,14 +3,11 @@ using BestGirlBot.Discord.Converters;
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class VoiceServerUpdateEvent : EventMessage<VoiceServerUpdatePayload>
+	public class VoiceServerUpdateEvent : EventMessage<VoiceServerUpdateEvent, VoiceServerUpdatePayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.VoiceServerUpdate;
-			}
+			return GatewayEvent.VoiceServerUpdate;
 		}
 	}
 

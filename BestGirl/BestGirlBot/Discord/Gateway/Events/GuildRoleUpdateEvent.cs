@@ -4,14 +4,11 @@ using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class GuildRoleUpdateEvent : EventMessage<GuildRoleUpdatePayload>
+	public class GuildRoleUpdateEvent : EventMessage<GuildRoleUpdateEvent, GuildRoleUpdatePayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.GuildRoleUpdate;
-			}
+			return GatewayEvent.GuildRoleUpdate;
 		}
 	}
 

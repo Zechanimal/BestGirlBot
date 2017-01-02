@@ -2,14 +2,11 @@
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class VoiceStateUpdateEvent : EventMessage<VoiceState>
+	public class VoiceStateUpdateEvent : EventMessage<VoiceStateUpdateEvent, VoiceState>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.VoiceStateUpdate;
-			}
+			return GatewayEvent.VoiceStateUpdate;
 		}
 	}
 }

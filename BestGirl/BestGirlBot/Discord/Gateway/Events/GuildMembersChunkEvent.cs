@@ -4,14 +4,11 @@ using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class GuildMembersChunkEvent : EventMessage<GuildMembersChunkPayload>
+	public class GuildMembersChunkEvent : EventMessage<GuildMembersChunkEvent, GuildMembersChunkPayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.GuildMembersChunk;
-			}
+			return GatewayEvent.GuildMembersChunk;
 		}
 	}
 

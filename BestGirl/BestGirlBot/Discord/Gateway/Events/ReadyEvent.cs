@@ -3,14 +3,11 @@ using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class ReadyEvent : EventMessage<ReadyPayload>
+	public class ReadyEvent : EventMessage<ReadyEvent, ReadyPayload>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.Ready;
-			}
+			return GatewayEvent.Ready;
 		}
 	}
 

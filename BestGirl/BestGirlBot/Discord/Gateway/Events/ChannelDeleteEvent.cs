@@ -2,14 +2,11 @@
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class ChannelDeleteEvent : EventMessage<Channel>
+	public class ChannelDeleteEvent : EventMessage<ChannelDeleteEvent, Channel>
 	{
-		public override GatewayEvent EventType
+		public override GatewayEvent EventType()
 		{
-			get
-			{
-				return GatewayEvent.ChannelDelete;
-			}
+			return GatewayEvent.ChannelDelete;
 		}
 	}
 }
