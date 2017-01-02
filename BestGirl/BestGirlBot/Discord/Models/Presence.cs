@@ -7,7 +7,7 @@ namespace BestGirlBot.Discord.Models
 	{
 		[JsonProperty("user")]
 		public User User { get; set; }
-		[JsonProperty("roles"), JsonConverter(typeof(SnowflakeJsonConverter))]
+		[JsonProperty("roles"), JsonConverter(typeof(GenericArrayConverter<SnowflakeJsonConverter>))]
 		public ulong[] Roles { get; set; }
 		[JsonProperty("game")]
 		public GameObject Game { get; set; }
