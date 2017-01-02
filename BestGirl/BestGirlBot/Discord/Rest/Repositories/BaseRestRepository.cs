@@ -9,20 +9,20 @@ namespace BestGirlBot.Discord.Rest.Repositories
 {
 	public class BaseRestRepository
 	{
-		public HttpClient Client { get; }
+		public HttpClient HttpClientClient { get; }
 		public static readonly HttpMethod PatchMethod = new HttpMethod("PATCH");
 
 		public BaseRestRepository(string baseUri, string authToken, string userAgent)
 		{
-			Client = new HttpClient();
-			Client.BaseAddress = new Uri(baseUri.EndsWith("/") ? baseUri : baseUri + '/');
-			Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bot", authToken);
-			Client.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
+			HttpClientClient = new HttpClient();
+			HttpClientClient.BaseAddress = new Uri(baseUri.EndsWith("/") ? baseUri : baseUri + '/');
+			HttpClientClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bot", authToken);
+			HttpClientClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
 		}
 
 		protected async Task<HttpResponseMessage> GetAsync(string endpoint)
 		{
-			return await Client.GetAsync(endpoint);
+			return await HttpClientClient.GetAsync(endpoint);
 		}
 
 		protected async Task<T> GetAsync<T>(string endpoint)
@@ -34,7 +34,7 @@ namespace BestGirlBot.Discord.Rest.Repositories
 
 		protected async Task<HttpResponseMessage> PostJsonAsync(string endpoint, object body)
 		{
-			return await Client.PostAsync(endpoint, new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
+			return await HttpClientClient.PostAsync(endpoint, new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
 		}
 
 		protected async Task<T> PostJsonAsync<T>(string endpoint, object body)
@@ -46,7 +46,7 @@ namespace BestGirlBot.Discord.Rest.Repositories
 
 		protected async Task<HttpResponseMessage> PutJsonAsync(string endpoint, object body)
 		{
-			return await Client.PutAsync(endpoint, new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
+			return await HttpClientClient.PutAsync(endpoint, new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
 		}
 
 		protected async Task<T> PutJsonAsync<T>(string endpoint, object body)
@@ -63,7 +63,7 @@ namespace BestGirlBot.Discord.Rest.Repositories
 				Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json")
 			};
 
-			return await Client.SendAsync(request);
+			return await HttpClientClient.SendAsync(request);
 		}
 
 		protected async Task<T> PatchJsonAsync<T>(string endpoint, object body)
@@ -75,7 +75,7 @@ namespace BestGirlBot.Discord.Rest.Repositories
 
 		protected async Task<HttpResponseMessage> DeleteAsync(string endpoint)
 		{
-			return await Client.DeleteAsync(endpoint);
+			return await HttpClientClient.DeleteAsync(endpoint);
 		}
 
 		protected async Task<T> DeleteAsync<T>(string endpoint)

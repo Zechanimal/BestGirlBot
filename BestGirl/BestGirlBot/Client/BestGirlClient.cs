@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BestGirlBot.Discord.Gateway;
-using BestGirlBot.Discord.Gateway.Payloads;
-using BestGirlBot.Discord.Gateway.Messages;
-using BestGirlBot.Discord.Models;
 using BestGirlBot.Discord.Rest;
-using BestGirlBot.Extensions;
-using Newtonsoft.Json;
-using System.IO;
-using BestGirlBot.Discord.Gateway.Events;
 
 namespace BestGirlBot.Client
 {
-	public class BestGirlClient
+	public partial class BestGirlClient
 	{
 		public BestGirlConfig Config { get; }
 		public GatewaySocketClient GatewaySocketClient { get; }
@@ -32,6 +25,16 @@ namespace BestGirlBot.Client
 		private ulong? _botUserId = null;
 
 		private ConcurrentDictionary<ulong, Models.Guild> _guilds;
+		private ConcurrentDictionary<ulong, Models.Channel> _guildChannels;
+		private ConcurrentDictionary<ulong, Models.Channel> _dmChannels;
+		private ConcurrentDictionary<ulong, Models.User> _users;
+		private ConcurrentDictionary<ulong, Models.Role> _roles;
+
+		public IEnumerable<Models.Guild> Guilds => _guilds.Select(g => g.Value);
+		public IEnumerable<Models.Channel> GuildChannels => _guildChannels.Select(c => c.Value);
+		public IEnumerable<Models.Channel> DmChannels => _dmChannels.Select(c => c.Value);
+		public IEnumerable<Models.User> Users => _users.Select(c => c.Value);
+		public IEnumerable<Models.Role> Roles => _roles.Select(r => r.Value);
 
 		public BestGirlClient(BestGirlConfig config)
 		{
@@ -40,9 +43,13 @@ namespace BestGirlBot.Client
 			_botUserId = RestClient.GetCurrentUserAsync().Result.Id;
 
 			GatewaySocketClient = new GatewaySocketClient();
-			GatewaySocketClient.GatewayMessageReceived += HandleGatewayMessage;
+			GatewaySocketClient.GatewayMessageReceived += OnGatewayMessageReceived;
 
 			_guilds = new ConcurrentDictionary<ulong, Models.Guild>();
+			_guildChannels = new ConcurrentDictionary<ulong, Models.Channel>();
+			_dmChannels = new ConcurrentDictionary<ulong, Models.Channel>();
+			_users = new ConcurrentDictionary<ulong, Models.User>();
+			_roles = new ConcurrentDictionary<ulong, Models.Role>();
 		}
 
 		public async Task Connect()
@@ -52,133 +59,6 @@ namespace BestGirlBot.Client
 			_shardCount = gatewayObject.Shards;
 
 			await GatewaySocketClient.Connect(gatewayUrl, GatewayCancelToken);
-		}
-
-		private void HandleGatewayMessage(object sender, GatewayMessageEventArgs e)
-		{
-			var socket = sender as GatewaySocketClient;
-			var gatewayMessage = e.Message;
-
-			switch (gatewayMessage.OpCode)
-			{
-				case GatewayOpCode.Dispatch:
-					HandleGatewayDispatchEvent(gatewayMessage);
-					break;
-				case GatewayOpCode.Heartbeat:
-					break;
-				case GatewayOpCode.Identify:
-					break;
-				case GatewayOpCode.StatusUpdate:
-					break;
-				case GatewayOpCode.VoiceStateUpdate:
-					break;
-				case GatewayOpCode.VoiceServerPing:
-					break;
-				case GatewayOpCode.Resume:
-					break;
-				case GatewayOpCode.Reconnect:
-					break;
-				case GatewayOpCode.RequestGuildMembers:
-					break;
-				case GatewayOpCode.InvalidSession:
-					break;
-				case GatewayOpCode.Hello:
-					_heartbeatInterval = gatewayMessage.DataAs<HelloPayload>().HeartbeatInterval;
-					socket.SendMessage(new Identify(Config.AuthToken, null, false, 50, 0, _shardCount));
-					break;
-				case GatewayOpCode.HeartbeatACK:
-					break;
-				default:
-					break;
-			}
-		}
-
-		private void HandleGatewayDispatchEvent(GatewayMessage message)
-		{
-			_previousSequence = message.Sequence;
-			Console.WriteLine($"Message received of type {message.Type}");
-			switch(message.Type.ToEnumFromDescription<GatewayEvent>())
-			{
-				case GatewayEvent.Ready:
-					{
-						var eventMessage = ReadyEvent.CreateEventMessage(message);
-						_handshakeCompleted = true;
-						//var msgData = message.DataAs<ReadyPayload>();
-						var msgData = eventMessage.EventData();
-						foreach (var guild in msgData.Guilds)
-						{
-							_guilds[guild.Id] = new Models.Guild(this, guild.Id);
-						}
-
-						Task.Run(async () => await SendHeartbeat());
-						break;
-					}
-				case GatewayEvent.MessageCreate:
-					{
-						var msgData = message.DataAs<Message>();
-						if (msgData.Author.Id != _botUserId)
-						{
-							if (msgData.Mentions.Where(u => u.Id == _botUserId).Count() > 0)
-							{
-								string authorMention = Message.MentionUser(msgData.Author.Id);
-								string response = $"Stop poking me, {authorMention}. I'm not fully functional.";
-								RestClient.CreateMessageAsync(msgData.ChannelId, response).Wait();
-							}
-						}
-						break;
-					}
-				case GatewayEvent.ChannelCreate:
-					{
-						var channel = message.DataAs<Channel>();
-						if (channel.IsPrivate)
-						{
-						}
-						else
-						{
-							_guilds[channel.GuildId.Value].CreateChannel(channel);
-						}
-						break;
-					}
-				case GatewayEvent.GuildCreate:
-					{
-						var guild = message.DataAs<Guild>();
-						if (_guilds.ContainsKey(guild.Id))
-						{
-							_guilds[guild.Id].Create(guild);
-						} else
-						{
-							_guilds[guild.Id] = new Models.Guild(this, guild.Id);
-							_guilds[guild.Id].Create(guild);
-						}
-						break;
-					}
-				case GatewayEvent.GuildUpdate:
-					{
-						var guild = message.DataAs<Guild>();
-						if (_guilds.ContainsKey(guild.Id))
-						{
-							_guilds[guild.Id].Update(guild);
-						}
-						break;
-					}
-				default:
-					break;
-			}
-		}
-
-		private async Task SendHeartbeat()
-		{
-			if (_handshakeCompleted && _heartbeatInterval != null)
-			{
-				DateTime lastHeartbeatTime = DateTime.Now;
-
-				while (!GatewayCancelToken.IsCancellationRequested)
-				{
-					GatewaySocketClient.SendMessage(new Heartbeat(_previousSequence.Value));
-
-					await Task.Delay(_heartbeatInterval.Value, GatewayCancelToken).ConfigureAwait(false);
-				}
-			}
 		}
 	}
 }

@@ -9,7 +9,8 @@ namespace BestGirlBot.Client.Models
 		public enum Types
 		{
 			Text,
-			Voice
+			Voice,
+			Private
 		}
 
 		public BestGirlClient Client { get; }
@@ -17,6 +18,7 @@ namespace BestGirlBot.Client.Models
 		public ulong Id { get; private set; }
 		public Guild Guild { get; private set; }
 		public string Name { get; private set; }
+		public User Recipient { get; private set; }
 		public Types Type { get; private set; }
 
 		public Channel(BestGirlClient client, ulong id, Guild guild, string name, Types type)
@@ -26,6 +28,17 @@ namespace BestGirlBot.Client.Models
 			Guild = guild;
 			Name = name;
 			Type = type;
+			Recipient = null;
+		}
+
+		public Channel(BestGirlClient client, ulong id, User recipient)
+		{
+			Client = client;
+			Id = id;
+			Guild = null;
+			Name = null;
+			Type = Types.Private;
+			Recipient = recipient;
 		}
 
 		public async Task<Discord.Models.Message> SendMessage(string message)

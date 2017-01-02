@@ -10,7 +10,7 @@ namespace BestGirlBot.Discord.Gateway
 		public abstract GatewayEvent EventType();
 		public string EventName() { return EventType().GetDescription(); }
 
-		public static TEventMessage CreateEventMessage(GatewayMessage message)
+		public static TEventMessage FromGatewayMessage(GatewayMessage message)
 		{
 			return (JObject.FromObject(message)).ToObject<TEventMessage>();
 		}

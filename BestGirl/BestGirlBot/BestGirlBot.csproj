@@ -145,8 +145,15 @@
   <ItemGroup>
     <Compile Include="Client\BestGirlClient.cs" />
     <Compile Include="Client\BestGirlConfig.cs" />
+    <Compile Include="Client\BestGirlEventClient.cs" />
+    <Compile Include="Client\Events\ChannelEventArgs.cs" />
+    <Compile Include="Client\Events\GuildEventArgs.cs" />
+    <Compile Include="Client\Events\HeartbeatEventArgs.cs" />
+    <Compile Include="Client\Events\MessageEventArgs.cs" />
+    <Compile Include="Client\Events\UserEventArgs.cs" />
     <Compile Include="Client\Models\Channel.cs" />
     <Compile Include="Client\Models\Guild.cs" />
+    <Compile Include="Client\Models\Message.cs" />
     <Compile Include="Client\Models\Role.cs" />
     <Compile Include="Client\Models\User.cs" />
     <Compile Include="Discord\Converters\GenericArrayConverter.cs" />
