@@ -77,17 +77,17 @@ namespace BestGirlBot.Discord.Rest
 
 		public async Task<Message[]> GetChannelMessagesAroundAsync(ulong channelId, ulong messageId, int limit)
 		{
-			return await GetAsync<Message[]>($"channels/{channelId}/messages?around={messageId}&limit=limit");
+			return await GetAsync<Message[]>($"channels/{channelId}/messages?around={messageId}&limit={limit}");
 		}
 
 		public async Task<Message[]> GetChannelMessagesBeforeAsync(ulong channelId, ulong messageId, int limit)
 		{
-			return await GetAsync<Message[]>($"channels/{channelId}/messages?before={messageId}&limit=limit");
+			return await GetAsync<Message[]>($"channels/{channelId}/messages?before={messageId}&limit={limit}");
 		}
 
 		public async Task<Message[]> GetChannelMessagesAfterAsync(ulong channelId, ulong messageId, int limit)
 		{
-			return await GetAsync<Message[]>($"channels/{channelId}/messages?after={messageId}&limit=limit");
+			return await GetAsync<Message[]>($"channels/{channelId}/messages?after={messageId}&limit={limit}");
 		}
 
 		public async Task<User> GetCurrentUserAsync()
