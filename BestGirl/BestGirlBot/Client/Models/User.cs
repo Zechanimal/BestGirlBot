@@ -5,6 +5,8 @@ namespace BestGirlBot.Client.Models
 {
 	public class User
 	{
+		public BestGirlClient Client { get; }
+
 		public ulong Id { get; private set; }
 		public Guild Guild { get; private set; }
 		public string Username { get; private set; }
@@ -13,8 +15,9 @@ namespace BestGirlBot.Client.Models
 		public bool IsDeaf { get; private set; }
 		public IList<Role> Roles { get; private set; }
 
-		public User(ulong id, string username, Guild guild, string nickname, bool mute, bool deaf, IEnumerable<Role> roles)
+		public User(BestGirlClient client, ulong id, string username, Guild guild, string nickname, bool mute, bool deaf, IEnumerable<Role> roles)
 		{
+			Client = client;
 			Id = id;
 			Guild = guild;
 			Username = username;

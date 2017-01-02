@@ -14,13 +14,16 @@ namespace BestGirlBot.Client.Models
 		private ConcurrentDictionary<ulong, Role> _roles;
 		private ConcurrentDictionary<ulong, User> _users;
 
+		public BestGirlClient Client { get; }
+
 		public ulong Id { get; private set; }
 		public string Name { get; private set; } = null;
 		public bool Available { get; private set; } = false;
 		public User Owner { get; private set; } = null;
 
-		public Guild(ulong id)
+		public Guild(BestGirlClient client, ulong id)
 		{
+			Client = client;
 			Id = id;
 
 			_channels = new ConcurrentDictionary<ulong, Channel>();
@@ -69,19 +72,19 @@ namespace BestGirlBot.Client.Models
 
 			foreach (var role in guildModel.Roles)
 			{
-				_roles[role.Id] = new Role(role.Id, this, role.Name);
+				_roles[role.Id] = new Role(Client, role.Id, this, role.Name);
 			}
 
 			foreach (var member in guildModel.Members)
 			{
 				var memberRoles = member.Roles.Select(rid => _roles[rid]);
-				_users[member.User.Id] = new User(member.User.Id, member.User.Username, this, member.Nick, member.Mute, member.Deaf, memberRoles);
+				_users[member.User.Id] = new User(Client, member.User.Id, member.User.Username, this, member.Nick, member.Mute, member.Deaf, memberRoles);
 			}
 
 			foreach (var channel in guildModel.Channels)
 			{
 				Channel.Types type = channel.Type == DiscordGuildChannel.Types.Voice ? Channel.Types.Voice : Channel.Types.Text;
-				_channels[channel.Id] = new Channel(channel.Id, this, channel.Name, type);
+				_channels[channel.Id] = new Channel(Client, channel.Id, this, channel.Name, type);
 			}
 
 			User owner;

@@ -103,7 +103,7 @@ namespace BestGirlBot.Client
 						var msgData = message.DataAs<ReadyPayload>();
 						foreach (var guild in msgData.Guilds)
 						{
-							_guilds[guild.Id] = new Models.Guild(guild.Id);
+							_guilds[guild.Id] = new Models.Guild(this, guild.Id);
 						}
 
 						Task.Run(async () => await SendHeartbeat());
@@ -131,7 +131,7 @@ namespace BestGirlBot.Client
 							_guilds[guild.Id].Create(guild);
 						} else
 						{
-							_guilds[guild.Id] = new Models.Guild(guild.Id);
+							_guilds[guild.Id] = new Models.Guild(this, guild.Id);
 							_guilds[guild.Id].Create(guild);
 						}
 						break;
