@@ -8,6 +8,7 @@ using BestGirlBot.Discord.Gateway.Payloads;
 using BestGirlBot.Discord.Gateway.Messages;
 using BestGirlBot.Discord.Models;
 using BestGirlBot.Discord.Rest;
+using BestGirlBot.Extensions;
 using Newtonsoft.Json;
 using System.IO;
 

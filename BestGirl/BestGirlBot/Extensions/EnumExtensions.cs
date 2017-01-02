@@ -22,5 +22,18 @@ namespace BestGirlBot.Extensions
 
 			return null;
 		}
+
+		public static T ToEnumFromDescription<T>(this string value)
+		{
+			var fields = typeof(T).GetFields();
+			foreach (var field in fields)
+			{
+				var descriptionAttributes = (DescriptionAttribute[])field.GetCustomAttributes(typeof(DescriptionAttribute), false);
+				if (descriptionAttributes != null && descriptionAttributes.Length > 0 && descriptionAttributes[0].Description == value)
+					return (T)Enum.Parse(typeof(T), field.Name);
+			}
+
+			return (T)Enum.Parse(typeof(T), value);
+		}
 	}
 }
