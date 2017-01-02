@@ -45,7 +45,7 @@ namespace BestGirlBot.Discord.Models
 		[JsonProperty("unavailable")]
 		public bool Unavailable { get; set; }
 		[JsonProperty("members")]
-		public GuildMember Members { get; set; }
+		public GuildMember[] Members { get; set; }
 		[JsonProperty("channels")]
 		public GuildChannel Channels { get; set; }
 		[JsonProperty("presences")]
