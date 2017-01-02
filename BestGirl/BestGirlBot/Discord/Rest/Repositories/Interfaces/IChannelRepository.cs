@@ -6,9 +6,9 @@ namespace BestGirlBot.Discord.Rest.Repositories.Interfaces
 	public interface IChannelRepository
 	{
 		Task<Channel> GetChannelAsync(ulong channelId);
-		Task<GuildChannel> ModifyChannelAsync(ulong channelId, string name, int position);
-		Task<GuildTextChannel> ModifyChannelAsync(ulong channelId, string name, int position, string topic);
-		Task<GuildVoiceChannel> ModifyChannelAsync(ulong channelId, string name, int position, int bitrate, int userLimit);
+		Task<Channel> ModifyChannelAsync(ulong channelId, string name, int position);
+		Task<Channel> ModifyTextChannelAsync(ulong channelId, string name, int position, string topic);
+		Task<Channel> ModifyVoiceChannelAsync(ulong channelId, string name, int position, int bitrate, int userLimit);
 		Task<Channel> DeleteChannelAsync(ulong channelId);
 		Task<Message[]> GetChannelMessagesAroundAsync(ulong channelId, ulong messageId, int limit);
 		Task<Message[]> GetChannelMessagesBeforeAsync(ulong channelId, ulong messageId, int limit);

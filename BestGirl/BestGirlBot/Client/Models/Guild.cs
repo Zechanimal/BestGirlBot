@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DiscordGuild = BestGirlBot.Discord.Models.Guild;
-using DiscordGuildChannel = BestGirlBot.Discord.Models.GuildChannel;
+using DiscordChannel = BestGirlBot.Discord.Models.Channel;
 using DiscordRole = BestGirlBot.Discord.Models.Role;
 using DiscordUser = BestGirlBot.Discord.Models.User;
 
@@ -83,7 +83,7 @@ namespace BestGirlBot.Client.Models
 
 			foreach (var channel in guildModel.Channels)
 			{
-				Channel.Types type = channel.Type == DiscordGuildChannel.Types.Voice ? Channel.Types.Voice : Channel.Types.Text;
+				Channel.Types type = channel.Type == DiscordChannel.Types.Voice ? Channel.Types.Voice : Channel.Types.Text;
 				_channels[channel.Id] = new Channel(Client, channel.Id, this, channel.Name, type);
 			}
 
@@ -100,14 +100,10 @@ namespace BestGirlBot.Client.Models
 			Available = !guildModel.Unavailable;
 		}
 
-		public void CreateTextChannel(DiscordGuildChannel channel)
+		public void CreateChannel(DiscordChannel channel)
 		{
-			_channels[channel.Id] = new Channel(Client, channel.Id, this, channel.Name, Channel.Types.Text);
-		}
-
-		public void CreateVoiceChannel(DiscordGuildChannel channel)
-		{
-			_channels[channel.Id] = new Channel(Client, channel.Id, this, channel.Name, Channel.Types.Voice);
+			Channel.Types type = channel.Type == DiscordChannel.Types.Voice ? Channel.Types.Voice : Channel.Types.Text;
+			_channels[channel.Id] = new Channel(Client, channel.Id, this, channel.Name, type);
 		}
 	}
 }

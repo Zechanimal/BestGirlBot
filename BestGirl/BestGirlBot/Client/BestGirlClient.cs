@@ -128,15 +128,10 @@ namespace BestGirlBot.Client
 						var channel = message.DataAs<Channel>();
 						if (channel.IsPrivate)
 						{
-							var dmChannel = message.DataAs<DMChannel>();
 						}
 						else
 						{
-							var guildChannel = message.DataAs<GuildChannel>();
-							if (guildChannel.Type == GuildChannel.Types.Text)
-								_guilds[guildChannel.GuildId].CreateTextChannel(message.DataAs<GuildTextChannel>());
-							else
-								_guilds[guildChannel.GuildId].CreateVoiceChannel(message.DataAs<GuildVoiceChannel>());
+							_guilds[channel.GuildId.Value].CreateChannel(channel);
 						}
 						break;
 					}

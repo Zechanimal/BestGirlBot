@@ -153,6 +153,10 @@
     <Compile Include="Discord\Converters\NullableSnowflakeJsonConverter.cs" />
     <Compile Include="Discord\Converters\SnowflakeJsonConverter.cs" />
     <Compile Include="Discord\Gateway\EventMessage.cs" />
+    <Compile Include="Discord\Gateway\Events\ChannelCreateEvent.cs" />
+    <Compile Include="Discord\Gateway\Events\ChannelUpdateEvent.cs" />
+    <Compile Include="Discord\Gateway\Events\ReadyEvent.cs" />
+    <Compile Include="Discord\Gateway\Events\ResumedEvent.cs" />
     <Compile Include="Discord\Gateway\GatewayEvent.cs" />
     <Compile Include="Discord\Gateway\GatewayMessageEventArgs.cs" />
     <Compile Include="Discord\Gateway\GatewayOpCode.cs" />
@@ -169,16 +173,12 @@
     <Compile Include="Discord\Gateway\Payloads\StatusUpdatePayload.cs" />
     <Compile Include="Discord\Models\Channel.cs" />
     <Compile Include="Discord\Models\Connection.cs" />
-    <Compile Include="Discord\Models\DMChannel.cs" />
     <Compile Include="Discord\Models\Emoji.cs" />
     <Compile Include="Discord\Models\GameObject.cs" />
     <Compile Include="Discord\Models\GatewayObject.cs" />
     <Compile Include="Discord\Models\Guild.cs" />
-    <Compile Include="Discord\Models\GuildChannel.cs" />
     <Compile Include="Discord\Models\GuildEmbed.cs" />
     <Compile Include="Discord\Models\GuildMember.cs" />
-    <Compile Include="Discord\Models\GuildTextChannel.cs" />
-    <Compile Include="Discord\Models\GuildVoiceChannel.cs" />
     <Compile Include="Discord\Models\Integration.cs" />
     <Compile Include="Discord\Models\Invite.cs" />
     <Compile Include="Discord\Models\InviteChannel.cs" />
@@ -207,9 +207,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Discord\Gateway\Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

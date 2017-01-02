@@ -28,14 +28,14 @@ namespace BestGirlBot.Discord.Rest
 			return await PostJsonAsync<Message>($"channels/{channelId}/messages", new { content = content });
 		}
 
-		public async Task<DMChannel> CreateDmAsync(ulong recipientId)
+		public async Task<Channel> CreateDmAsync(ulong recipientId)
 		{
-			return await PostJsonAsync<DMChannel>($"users/@me/channels", new { recipient_id = recipientId });
+			return await PostJsonAsync<Channel>($"users/@me/channels", new { recipient_id = recipientId });
 		}
 
-		public async Task<DMChannel> CreateGroupDmAsync(string[] accessTokens, IDictionary<ulong, string> nicks)
+		public async Task<Channel> CreateGroupDmAsync(string[] accessTokens, IDictionary<ulong, string> nicks)
 		{
-			return await PostJsonAsync<DMChannel>($"users/@me/channels", new { access_tokens = accessTokens, nicks = nicks });
+			return await PostJsonAsync<Channel>($"users/@me/channels", new { access_tokens = accessTokens, nicks = nicks });
 		}
 
 		public async Task<Channel> DeleteChannelAsync(ulong channelId)
@@ -56,19 +56,7 @@ namespace BestGirlBot.Discord.Rest
 
 		public async Task<Channel> GetChannelAsync(ulong channelId)
 		{
-			var response = await GetAsync($"channels/{channelId}");
-			var body = await response.Content.ReadAsStringAsync();
-			var obj = JsonConvert.DeserializeObject(body) as JObject;
-			var channel = obj.ToObject<Channel>();
-			if (channel.IsPrivate)
-			{
-				return obj.ToObject<DMChannel>();
-			}
-			else
-			{
-				var guildChannel = obj.ToObject<GuildChannel>();
-				return guildChannel.Type == "text" ? (Channel)obj.ToObject<GuildTextChannel>() : obj.ToObject<GuildVoiceChannel>();
-			}
+			return await GetAsync<Channel>($"channels/{channelId}");
 		}
 
 		public async Task<Message> GetChannelMessageAsync(ulong channelId, ulong messageId)
@@ -116,9 +104,9 @@ namespace BestGirlBot.Discord.Rest
 			return await GetAsync<Connection[]>($"users/@me/connections");
 		}
 
-		public async Task<DMChannel[]> GetUserDmsAsync()
+		public async Task<Channel[]> GetUserDmsAsync()
 		{
-			return await GetAsync<DMChannel[]>($"users/@me/channels");
+			return await GetAsync<Channel[]>($"users/@me/channels");
 		}
 
 		public async Task<bool> LeaveGuildAsync(ulong guildId)
@@ -127,22 +115,22 @@ namespace BestGirlBot.Discord.Rest
 			return response.StatusCode == System.Net.HttpStatusCode.NoContent;
 		}
 
-		public async Task<GuildChannel> ModifyChannelAsync(ulong channelId, string name, int position)
+		public async Task<Channel> ModifyChannelAsync(ulong channelId, string name, int position)
 		{
 			var data = new { name = name, position = position };
-			return await PatchJsonAsync<GuildChannel>($"channels/{channelId}", data);
+			return await PatchJsonAsync<Channel>($"channels/{channelId}", data);
 		}
 
-		public async Task<GuildTextChannel> ModifyChannelAsync(ulong channelId, string name, int position, string topic)
+		public async Task<Channel> ModifyTextChannelAsync(ulong channelId, string name, int position, string topic)
 		{
 			var data = new { name = name, position = position, topic = topic };
-			return await PatchJsonAsync<GuildTextChannel>($"channels/{channelId}", data);
+			return await PatchJsonAsync<Channel>($"channels/{channelId}", data);
 		}
 
-		public async Task<GuildVoiceChannel> ModifyChannelAsync(ulong channelId, string name, int position, int bitrate, int userLimit)
+		public async Task<Channel> ModifyVoiceChannelAsync(ulong channelId, string name, int position, int bitrate, int userLimit)
 		{
 			var data = new { name = name, position = position, bitrate = bitrate, user_limit = userLimit };
-			return await PatchJsonAsync<GuildVoiceChannel>($"channels/{channelId}", data);
+			return await PatchJsonAsync<Channel>($"channels/{channelId}", data);
 		}
 
 		public async Task<User> ModifyCurrentUserAsync(string username, string avatarData)
@@ -181,24 +169,24 @@ namespace BestGirlBot.Discord.Rest
 			return await DeleteAsync<Guild>($"guilds/{guildId}");
 		}
 
-		public async Task<GuildChannel[]> GetGuildChannelsAsync(ulong guildId)
+		public async Task<Channel[]> GetChannelsAsync(ulong guildId)
 		{
-			return await GetAsync<GuildChannel[]>($"guilds/{guildId}/channels");
+			return await GetAsync<Channel[]>($"guilds/{guildId}/channels");
 		}
 
-		public async Task<GuildTextChannel> CreateGuildTextChannelAsync(ulong guildId, string name, Permissions[] permissionOverwrites)
+		public async Task<Channel> CreateGuildTextChannelAsync(ulong guildId, string name, Permissions[] permissionOverwrites)
 		{
-			var data = new { name = name, type = GuildChannel.Types.Text, permission_overwrites = permissionOverwrites };
-			return await PostJsonAsync<GuildTextChannel>($"guilds/{guildId}/channels", data);
+			var data = new { name = name, type = Channel.Types.Text, permission_overwrites = permissionOverwrites };
+			return await PostJsonAsync<Channel>($"guilds/{guildId}/channels", data);
 		}
 
-		public async Task<GuildVoiceChannel> CreateGuildVoiceChannelAsync(ulong guildId, string name, int bitrate, int userLimit, Permissions[] permissionOverwrites)
+		public async Task<Channel> CreateGuildVoiceChannelAsync(ulong guildId, string name, int bitrate, int userLimit, Permissions[] permissionOverwrites)
 		{
-			var data = new { name = name, type = GuildChannel.Types.Voice, bitrate = bitrate, user_limit = userLimit, permission_overwrites = permissionOverwrites };
-			return await PostJsonAsync<GuildVoiceChannel>($"guilds/{guildId}/channels", data);
+			var data = new { name = name, type = Channel.Types.Voice, bitrate = bitrate, user_limit = userLimit, permission_overwrites = permissionOverwrites };
+			return await PostJsonAsync<Channel>($"guilds/{guildId}/channels", data);
 		}
 
-		public async Task<GuildChannel[]> ModifyGuildChannelPositionsAsync(ulong guildId, Tuple<ulong, int>[] channelOrders)
+		public async Task<Channel[]> ModifyChannelPositionsAsync(ulong guildId, Tuple<ulong, int>[] channelOrders)
 		{
 			List<Dictionary<string, object>> data = new List<Dictionary<string, object>>();
 			foreach (var channelOrder in channelOrders)
@@ -206,7 +194,7 @@ namespace BestGirlBot.Discord.Rest
 				data.Add(new Dictionary<string, object>() { { "id", channelOrder.Item1 }, { "position", channelOrder.Item2 } });
 			}
 
-			return await PatchJsonAsync<GuildChannel[]>($"guilds/{guildId}/channels", data);
+			return await PatchJsonAsync<Channel[]>($"guilds/{guildId}/channels", data);
 		}
 
 		public async Task<GuildMember> GetGuildMemberAsync(ulong guildId, ulong userId)

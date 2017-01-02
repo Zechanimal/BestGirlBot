@@ -11,10 +11,10 @@ namespace BestGirlBot.Discord.Rest.Repositories.Interfaces
 		Task<Guild> ModifyGuildAsync(ulong guildId, string name = null, string region = null, int? verificationLevel = null, int? defaultMessageNotifications = null,
 			ulong? afkChannelId = null, int? afkTimeout = null, string icon = null, ulong? ownerId = null, string splash = null);
 		Task<Guild> DeleteGuildAsync(ulong guildId);
-		Task<GuildChannel[]> GetGuildChannelsAsync(ulong guildId);
-		Task<GuildTextChannel> CreateGuildTextChannelAsync(ulong guildId, string name, Permissions[] permissionOverwrites);
-		Task<GuildVoiceChannel> CreateGuildVoiceChannelAsync(ulong guildId, string name, int bitrate, int userLimit, Permissions[] permissionOverwrites);
-		Task<GuildChannel[]> ModifyGuildChannelPositionsAsync(ulong guildId, Tuple<ulong, int>[] channelOrders);
+		Task<Channel[]> GetChannelsAsync(ulong guildId);
+		Task<Channel> CreateGuildTextChannelAsync(ulong guildId, string name, Permissions[] permissionOverwrites);
+		Task<Channel> CreateGuildVoiceChannelAsync(ulong guildId, string name, int bitrate, int userLimit, Permissions[] permissionOverwrites);
+		Task<Channel[]> ModifyChannelPositionsAsync(ulong guildId, Tuple<ulong, int>[] channelOrders);
 		Task<GuildMember> GetGuildMemberAsync(ulong guildId, ulong userId);
 		Task<GuildMember[]> ListGuildMembersAsync(ulong guildId, int limit = 1, int after = 0);
 		Task<GuildMember> AddGuildMemberAsync(ulong guildId, ulong userId, string accessToken, string nick, Role[] roles, bool mute = false, bool deaf = false);

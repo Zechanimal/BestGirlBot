@@ -47,7 +47,7 @@ namespace BestGirlBot.Discord.Models
 		[JsonProperty("members")]
 		public GuildMember[] Members { get; set; }
 		[JsonProperty("channels")]
-		public GuildChannel[] Channels { get; set; }
+		public Channel[] Channels { get; set; }
 		[JsonProperty("presences")]
 		public Presence[] Presences { get; set; }
 		[JsonProperty("voice_states")]

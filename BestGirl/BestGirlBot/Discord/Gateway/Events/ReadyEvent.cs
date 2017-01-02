@@ -1,8 +1,19 @@
 ﻿using Newtonsoft.Json;
 using BestGirlBot.Discord.Models;
 
-namespace BestGirlBot.Discord.Gateway.Payloads
+namespace BestGirlBot.Discord.Gateway.Events
 {
+	public class ReadyEvent : EventMessage<ReadyPayload>
+	{
+		public override GatewayEvent EventType
+		{
+			get
+			{
+				return GatewayEvent.Ready;
+			}
+		}
+	}
+
 	public class ReadyPayload
 	{
 		[JsonProperty("v")]
