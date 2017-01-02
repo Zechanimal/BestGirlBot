@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 using BestGirlBot.Extensions;
 
 namespace BestGirlBot.Discord.Gateway
@@ -12,6 +13,11 @@ namespace BestGirlBot.Discord.Gateway
 		public static TEventMessage CreateEventMessage(GatewayMessage message)
 		{
 			return (JObject.FromObject(message)).ToObject<TEventMessage>();
+		}
+
+		public static Type PayloadType()
+		{
+			return typeof(TPayload);
 		}
 	}
 }
