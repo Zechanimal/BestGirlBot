@@ -21,7 +21,7 @@ namespace BestGirlBot.Discord.Rest.Repositories.Interfaces
 		Task<bool> ModifyGuildMemberAsync(ulong guildId, ulong userId, string nick = null, Role[] roles = null, bool? mute = null, bool? deaf = null, ulong? voiceChannelId = null);
 		Task<bool> RemoveGuildMemberAsync(ulong guildId, ulong userId);
 		Task<User[]> GetGuildBansAsync(ulong guildId);
-		Task<bool> CreateGuildBanAsync(ulong guildId, int? deleteMessageDays = null);
+		Task<bool> CreateGuildBanAsync(ulong guildId, ulong userId, int deleteMessageDays = 0);
 		Task<bool> RemoveGuildBanAsync(ulong guildId, ulong userId);
 		Task<Role[]> GetGuildRolesAsync(ulong guildId);
 		Task<Role[]> ModifyGuildRolePositionsAsync(ulong guildId, Tuple<ulong, int>[] roleOrders);
@@ -33,7 +33,7 @@ namespace BestGirlBot.Discord.Rest.Repositories.Interfaces
 		Task<InviteWithMetadata[]> GetGuildInvitesAsync(ulong guildId);
 		Task<Integration[]> GetGuildIntegrationsAsync(ulong guildId);
 		Task<bool> CreateGuildIntegrationAsync(ulong guildId, string type, ulong integrationId);
-		Task<bool> ModifyGuildIntegrationAsync(ulong guildId, int expireBehavior, int expireGracePeriodSeconds, bool enableEmoticons);
+		Task<bool> ModifyGuildIntegrationAsync(ulong guildId, ulong integrationId, int expireBehavior, int expireGracePeriodSeconds, bool enableEmoticons);
 		Task<bool> DeleteGuildIntegrationAsync(ulong guildId, ulong integrationId);
 		Task<bool> SyncGuildIntegrationAsync(ulong guildId, ulong integrationId);
 		Task<GuildEmbed> GetGuildEmbedAsync(ulong guildId);
