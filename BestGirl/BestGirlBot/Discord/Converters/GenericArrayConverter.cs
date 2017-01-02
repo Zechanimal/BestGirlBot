@@ -27,20 +27,20 @@ namespace BestGirlBot.Discord.Converters
 				.FirstOrDefault();
 
 			Type listType = typeof(List<>).MakeGenericType(innerParamType);
-			var result = Activator.CreateInstance(listType);
+			var result = (IList)Activator.CreateInstance(listType);
 
 			if (reader.TokenType == JsonToken.StartArray)
 			{
 				reader.Read();
 				while (reader.TokenType != JsonToken.EndArray)
 				{
-					((IList)result).Add(InnerConverter.ReadJson(reader, innerParamType, null, serializer));
+					result.Add(InnerConverter.ReadJson(reader, innerParamType, null, serializer));
 					reader.Read();
 				}
 			}
 
-			var array = Array.CreateInstance(innerParamType, ((IList)result).Count);
-			((IList)result).CopyTo(array, 0);
+			var array = Array.CreateInstance(innerParamType, result.Count);
+			result.CopyTo(array, 0);
 			return array;
 		}
 
