@@ -145,6 +145,10 @@
   <ItemGroup>
     <Compile Include="Client\BestGirlClient.cs" />
     <Compile Include="Client\BestGirlConfig.cs" />
+    <Compile Include="Client\Models\Channel.cs" />
+    <Compile Include="Client\Models\Guild.cs" />
+    <Compile Include="Client\Models\Role.cs" />
+    <Compile Include="Client\Models\User.cs" />
     <Compile Include="Discord\Converters\NullableSnowflakeJsonConverter.cs" />
     <Compile Include="Discord\Converters\SnowflakeJsonConverter.cs" />
     <Compile Include="Discord\Gateway\GatewayMessageEventArgs.cs" />
@@ -157,6 +161,7 @@
     <Compile Include="Discord\Gateway\Messages\StatusUpdate.cs" />
     <Compile Include="Discord\Gateway\Payloads\HelloPayload.cs" />
     <Compile Include="Discord\Gateway\Payloads\IdentifyPayload.cs" />
+    <Compile Include="Discord\Gateway\Payloads\ReadyPayload.cs" />
     <Compile Include="Discord\Gateway\Payloads\RequestGuildMembersPayload.cs" />
     <Compile Include="Discord\Gateway\Payloads\StatusUpdatePayload.cs" />
     <Compile Include="Discord\Models\Channel.cs" />
