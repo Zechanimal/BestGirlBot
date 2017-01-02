@@ -13,8 +13,8 @@ namespace BestGirlBot.Client
 	public class BestGirlClient
 	{
 		public BestGirlConfig Config { get; }
-		private GatewaySocketClient GatewaySocketClient { get; }
-		private RestClient RestClient { get; }
+		public GatewaySocketClient GatewaySocketClient { get; }
+		public RestClient RestClient { get; }
 		private CancellationToken GatewayCancelToken { get; } = CancellationToken.None;
 
 		private static readonly string DiscordHttpApiBaseUri = "https://discordapp.com/api/";

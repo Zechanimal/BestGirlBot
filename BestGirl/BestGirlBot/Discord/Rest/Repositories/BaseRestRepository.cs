@@ -9,8 +9,8 @@ namespace BestGirlBot.Discord.Rest.Repositories
 {
 	public class BaseRestRepository
 	{
-		protected HttpClient Client { get; set; }
-		protected static readonly HttpMethod PatchMethod = new HttpMethod("PATCH");
+		public HttpClient Client { get; }
+		public static readonly HttpMethod PatchMethod = new HttpMethod("PATCH");
 
 		public BaseRestRepository(string baseUri, string authToken, string userAgent)
 		{
