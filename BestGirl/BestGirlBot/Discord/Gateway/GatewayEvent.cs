@@ -18,6 +18,8 @@ namespace BestGirlBot.Discord.Gateway
 		GuildCreate,
 		[Description("GUILD_UPDATE")]
 		GuildUpdate,
+		[Description("GUILD_DELETE")]
+		GuildDelete,
 		[Description("GUILD_BAN_ADD")]
 		GuildBanAdd,
 		[Description("GUILD_BAN_REMOVE")]
@@ -42,6 +44,8 @@ namespace BestGirlBot.Discord.Gateway
 		GuildRoleDelete,
 		[Description("MESSAGE_CREATE")]
 		MessageCreate,
+		[Description("MESSAGE_UPDATE")]
+		MessageUpdate,
 		[Description("MESSAGE_DELETE")]
 		MessageDelete,
 		[Description("MESSAGE_DELETE_BULK")]

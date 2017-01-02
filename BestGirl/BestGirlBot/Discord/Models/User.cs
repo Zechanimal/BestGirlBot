@@ -7,6 +7,8 @@ namespace BestGirlBot.Discord.Models
 	{
 		[JsonProperty("id"), JsonConverter(typeof(SnowflakeJsonConverter))]
 		public ulong Id { get; set; }
+		[JsonProperty("guild_id"), JsonConverter(typeof(NullableSnowflakeJsonConverter))]
+		public ulong? GuildId { get; set; }
 		[JsonProperty("username")]
 		public string Username { get; set; }
 		[JsonProperty("discriminator")]

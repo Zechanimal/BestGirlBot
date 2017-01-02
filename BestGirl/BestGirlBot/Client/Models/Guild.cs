@@ -77,7 +77,7 @@ namespace BestGirlBot.Client.Models
 
 			foreach (var member in guildModel.Members)
 			{
-				var memberRoles = member.Roles.Select(rid => _roles[rid]);
+				var memberRoles = member.RoleIds.Select(rid => _roles[rid]);
 				_users[member.User.Id] = new User(Client, member.User.Id, member.User.Username, this, member.Nick, member.Mute, member.Deaf, memberRoles);
 			}
 

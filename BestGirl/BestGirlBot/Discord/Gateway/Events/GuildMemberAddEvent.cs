@@ -2,13 +2,13 @@
 
 namespace BestGirlBot.Discord.Gateway.Events
 {
-	public class ChannelUpdateEvent : EventMessage<Channel>
+	public class GuildMemberAddEvent : EventMessage<GuildMember>
 	{
 		public override GatewayEvent EventType
 		{
 			get
 			{
-				return GatewayEvent.ChannelUpdate;
+				return GatewayEvent.GuildMemberAdd;
 			}
 		}
 	}
