@@ -167,10 +167,15 @@
     <Compile Include="Discord\Models\GatewayObject.cs" />
     <Compile Include="Discord\Models\Guild.cs" />
     <Compile Include="Discord\Models\GuildChannel.cs" />
+    <Compile Include="Discord\Models\GuildEmbed.cs" />
     <Compile Include="Discord\Models\GuildMember.cs" />
     <Compile Include="Discord\Models\GuildTextChannel.cs" />
     <Compile Include="Discord\Models\GuildVoiceChannel.cs" />
     <Compile Include="Discord\Models\Integration.cs" />
+    <Compile Include="Discord\Models\Invite.cs" />
+    <Compile Include="Discord\Models\InviteChannel.cs" />
+    <Compile Include="Discord\Models\InviteGuild.cs" />
+    <Compile Include="Discord\Models\InviteMetadata.cs" />
     <Compile Include="Discord\Models\Message.cs" />
     <Compile Include="Discord\Models\Permissions.cs" />
     <Compile Include="Discord\Models\Presence.cs" />
@@ -182,6 +187,7 @@
     <Compile Include="Discord\Rest\Repositories\BaseRestRepository.cs" />
     <Compile Include="Discord\Rest\Repositories\Interfaces\IChannelRepository.cs" />
     <Compile Include="Discord\Rest\Repositories\Interfaces\IGatewayRepository.cs" />
+    <Compile Include="Discord\Rest\Repositories\Interfaces\IGuildRepository.cs" />
     <Compile Include="Discord\Rest\Repositories\Interfaces\IUserRepository.cs" />
     <Compile Include="Discord\Rest\RestClient.cs" />
     <Compile Include="Program.cs" />
