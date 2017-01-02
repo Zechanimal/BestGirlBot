@@ -14,11 +14,15 @@ namespace BestGirlBot.Discord.Models
 		[JsonProperty("avatar")]
 		public string Avatar { get; set; }
 		[JsonProperty("bot")]
-		public bool Bot { get; set; }
+		public bool? Bot { get; set; }
+	}
+
+	public class ExtendedUser : User
+	{
 		[JsonProperty("mfa_enabled")]
-		public bool MfaEnabled { get; set; }
+		public bool? MfaEnabled { get; set; }
 		[JsonProperty("verified")]
-		public bool Verified { get; set; }
+		public bool? Verified { get; set; }
 		[JsonProperty("email")]
 		public string Email { get; set; }
 	}

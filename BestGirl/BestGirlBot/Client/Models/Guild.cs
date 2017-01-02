@@ -74,7 +74,7 @@ namespace BestGirlBot.Client.Models
 
 			foreach (var member in guildModel.Members)
 			{
-				var memberRoles = member.Roles.Select(r => _roles[r.Id]);
+				var memberRoles = member.Roles.Select(rid => _roles[rid]);
 				_users[member.User.Id] = new User(member.User.Id, member.User.Username, this, member.Nick, member.Mute, member.Deaf, memberRoles);
 			}
 
@@ -85,7 +85,7 @@ namespace BestGirlBot.Client.Models
 			}
 
 			User owner;
-			if (_users.TryGetValue(guildModel.OwnerId, out owner))
+			if (guildModel.OwnerId.HasValue && _users.TryGetValue(guildModel.OwnerId.Value, out owner))
 			{
 				Owner = owner;
 			}

@@ -21,7 +21,7 @@ namespace BestGirlBot.Client.Models
 			Nickname = nickname;
 			IsMute = mute;
 			IsDeaf = deaf;
-			Roles = roles.ToList();
+			Roles = roles == null ? new List<Role>() : roles.ToList();
 		}
 	}
 }

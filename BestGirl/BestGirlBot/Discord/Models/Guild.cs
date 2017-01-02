@@ -14,18 +14,18 @@ namespace BestGirlBot.Discord.Models
 		public string Icon { get; set; }
 		[JsonProperty("splash")]
 		public string Splash { get; set; }
-		[JsonProperty("owner_id"), JsonConverter(typeof(SnowflakeJsonConverter))]
-		public ulong OwnerId { get; set; }
+		[JsonProperty("owner_id"), JsonConverter(typeof(NullableSnowflakeJsonConverter))]
+		public ulong? OwnerId { get; set; }
 		[JsonProperty("region")]
 		public string Region { get; set; }
-		[JsonProperty("afk_channel_id"), JsonConverter(typeof(SnowflakeJsonConverter))]
-		public ulong AfkChannelId { get; set; }
+		[JsonProperty("afk_channel_id"), JsonConverter(typeof(NullableSnowflakeJsonConverter))]
+		public ulong? AfkChannelId { get; set; }
 		[JsonProperty("afk_timeout")]
 		public int AfkTimeout { get; set; }
 		[JsonProperty("embed_enabled")]
 		public bool EmbedEnabled { get; set; }
-		[JsonProperty("embed_channel_id"), JsonConverter(typeof(SnowflakeJsonConverter))]
-		public ulong EmbedChannelId { get; set; }
+		[JsonProperty("embed_channel_id"), JsonConverter(typeof(NullableSnowflakeJsonConverter))]
+		public ulong? EmbedChannelId { get; set; }
 		[JsonProperty("verification_level")]
 		public int VerificationLevel { get; set; }
 		[JsonProperty("default_message_notifications")]
