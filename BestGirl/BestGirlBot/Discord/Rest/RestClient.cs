@@ -16,9 +16,10 @@ namespace BestGirlBot.Discord.Rest
 		{
 		}
 
-		public async Task<HttpResponseMessage> BulkDeleteMessagesAsync(ulong channelId, ulong[] messageIds)
+		public async Task<bool> BulkDeleteMessagesAsync(ulong channelId, ulong[] messageIds)
 		{
-			return await PostJsonAsync($"channels/{channelId}/messages/bulk-delete", new { messages = messageIds.Select(i => i.ToString()).ToArray() });
+			var response = await PostJsonAsync($"channels/{channelId}/messages/bulk-delete", new { messages = messageIds.Select(i => i.ToString()).ToArray() });
+			return response.StatusCode == System.Net.HttpStatusCode.NoContent;
 		}
 
 		public async Task<Message> CreateMessageAsync(ulong channelId, string content)
@@ -41,9 +42,10 @@ namespace BestGirlBot.Discord.Rest
 			return await DeleteAsync<Channel>($"channels/{channelId}");
 		}
 
-		public async Task<HttpResponseMessage> DeleteMessageAsync(ulong channelId, ulong messageId)
+		public async Task<bool> DeleteMessageAsync(ulong channelId, ulong messageId)
 		{
-			return await DeleteAsync($"channels/{channelId}/messages/{messageId}");
+			var response = await DeleteAsync($"channels/{channelId}/messages/{messageId}");
+			return response.StatusCode == System.Net.HttpStatusCode.NoContent;
 		}
 
 		public async Task<Message> EditMessageAsync(ulong channelId, ulong messageId, string content)
@@ -118,9 +120,10 @@ namespace BestGirlBot.Discord.Rest
 			return await GetAsync<DMChannel[]>($"users/@me/channels");
 		}
 
-		public async Task<HttpResponseMessage> LeaveGuildAsync(ulong guildId)
+		public async Task<bool> LeaveGuildAsync(ulong guildId)
 		{
-			return await DeleteAsync($"users/@me/guilds/{guildId}");
+			var response =  await DeleteAsync($"users/@me/guilds/{guildId}");
+			return response.StatusCode == System.Net.HttpStatusCode.NoContent;
 		}
 
 		public async Task<GuildChannel> ModifyChannelAsync(ulong channelId, string name, int position)

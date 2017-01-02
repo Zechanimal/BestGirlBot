@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BestGirlBot.Discord.Models;
 
 namespace BestGirlBot.Discord.Rest.Repositories.Interfaces
@@ -17,7 +16,7 @@ namespace BestGirlBot.Discord.Rest.Repositories.Interfaces
 		Task<Message> GetChannelMessageAsync(ulong channelId, ulong messageId);
 		Task<Message> CreateMessageAsync(ulong channelId, string content);
 		Task<Message> EditMessageAsync(ulong channelId, ulong messageId, string content);
-		Task<HttpResponseMessage> DeleteMessageAsync(ulong channelId, ulong messageId);
-		Task<HttpResponseMessage> BulkDeleteMessagesAsync(ulong channelId, ulong[] messageIds);
+		Task<bool> DeleteMessageAsync(ulong channelId, ulong messageId);
+		Task<bool> BulkDeleteMessagesAsync(ulong channelId, ulong[] messageIds);
 	}
 }
