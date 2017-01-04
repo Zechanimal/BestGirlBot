@@ -1,8 +1,10 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BestGirlBot.Client.Services.Interfaces;
 using BestGirlBot.Discord.Gateway;
 using BestGirlBot.Discord.Rest;
 
@@ -36,6 +38,9 @@ namespace BestGirlBot.Client
 		public IEnumerable<Models.User> Users => _users.Select(c => c.Value);
 		public IEnumerable<Models.Role> Roles => _roles.Select(r => r.Value);
 
+		public IEnumerable<IService> Services => _services.Select(s => s.Value);
+		private Dictionary<string, IService> _services { get; set; }
+
 		public BestGirlClient(BestGirlConfig config)
 		{
 			Config = config;
@@ -50,6 +55,8 @@ namespace BestGirlBot.Client
 			_dmChannels = new ConcurrentDictionary<ulong, Models.Channel>();
 			_users = new ConcurrentDictionary<ulong, Models.User>();
 			_roles = new ConcurrentDictionary<ulong, Models.Role>();
+
+			_services = new Dictionary<string, IService>();
 		}
 
 		public async Task Connect()
@@ -58,7 +65,20 @@ namespace BestGirlBot.Client
 			var gatewayUrl = gatewayObject.Url;
 			_shardCount = gatewayObject.Shards;
 
+			foreach (var service in Services)
+				service.Start(this);
+
 			await GatewaySocketClient.Connect(gatewayUrl, GatewayCancelToken);
+		}
+
+		public void UseService(IService service)
+		{
+			if (_services.ContainsKey(service.Name))
+			{
+				throw new InvalidOperationException($"There is already a service named {service.Name} added");
+			}
+
+			_services[service.Name] = service;
 		}
 	}
 }

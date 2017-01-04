@@ -8,6 +8,7 @@ using BestGirlBot.Discord.Gateway.Messages;
 using BestGirlBot.Discord.Gateway.Payloads;
 using BestGirlBot.Extensions;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace BestGirlBot.Client
 {
@@ -69,6 +70,7 @@ namespace BestGirlBot.Client
 
 		private void HandleGatewayDispatchMessage(GatewayMessage gatewayMessage)
 		{
+			Console.WriteLine(gatewayMessage.Type);
 			_previousSequence = gatewayMessage.Sequence;
 			switch (gatewayMessage.Type.ToEnumFromDescription<GatewayEvent>())
 			{
@@ -108,29 +110,36 @@ namespace BestGirlBot.Client
 				case GatewayEvent.GuildCreate:
 					{
 						var eventMessage = GuildCreateEvent.FromGatewayMessage(gatewayMessage);
-						var data = eventMessage.EventData();
-						var guildId = data.Id;
-						var guild = _guilds[guildId];
+						var guild = eventMessage.EventData();
+						var guildId = guild.Id;
+						var clientGuild = _guilds[guildId];
 
-						foreach (var role in data.Roles)
+						foreach (var role in guild.Roles)
 						{
-							_roles[role.Id] = new Models.Role(this, role.Id, guild, role.Name);
+							_roles[role.Id] = new Models.Role(this, role.Id, clientGuild, role.Name);
 						}
 
-						foreach (var member in data.Members)
+						List<Models.Member> guildMembers = new List<Models.Member>();
+						foreach (var member in guild.Members)
 						{
 							var user = member.User;
-							var roles = member.RoleIds.Select(rid => Roles.First(r => r.Id == rid));
-							var guildMember = new Models.User(this, user.Id, user.Username, guild, member.Nick, member.Mute, member.Deaf, roles);
-							_users[user.Id] = _users[guildMember.Id];
+							var clientRoles = member.RoleIds.Select(rid => Roles.First(r => r.Id == rid));
+							var clientUser = new Models.User(this, user.Id, user.Username);
+							_users[user.Id] = clientUser;
+
+							var clientMember = new Models.Member(this, clientUser, clientGuild, member.Nick, member.Mute, member.Deaf, clientRoles);
+							guildMembers.Add(clientMember);
 						}
 
-						foreach (var channel in data.Channels)
+						foreach (var channel in guild.Channels)
 						{
 							var type = channel.Type == Discord.Models.Channel.Types.Voice ? Models.Channel.Types.Voice : Models.Channel.Types.Text;
-							var guildChannel = new Models.Channel(this, channel.Id, guild, channel.Name, type);
+							var guildChannel = new Models.Channel(this, channel.Id, clientGuild, channel.Name, type);
 							_guildChannels[guildChannel.Id] = guildChannel;
 						}
+
+						var owner = guildMembers.First(m => m.User.Id == guild.OwnerId);
+						clientGuild.Create(guildMembers, guild.Name, !guild.Unavailable, owner);
 
 						break;
 					}
