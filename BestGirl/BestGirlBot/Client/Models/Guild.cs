@@ -37,5 +37,9 @@ namespace BestGirlBot.Client.Models
 			}
 		}
 
+		public void Update()
+		{
+
+		}
 	}
 }

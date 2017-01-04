@@ -84,6 +84,13 @@ namespace BestGirlBot.Client
 							_guilds[guild.Id] = new Models.Guild(this, guild.Id);
 						}
 
+						foreach (var channel in data.PrivateChannels)
+						{
+							var clientUser = AddOrGetUser(channel.Recipient);
+							var clientChannel = new Models.Channel(this, channel.Id, clientUser);
+							_dmChannels[clientChannel.Id] = clientChannel;
+						}
+
 						Task.Run(async () => await StartHeartbeat(GatewayCancelToken));
 						break;
 					}
@@ -95,16 +102,48 @@ namespace BestGirlBot.Client
 				case GatewayEvent.ChannelCreate:
 					{
 						var eventMessage = ChannelCreateEvent.FromGatewayMessage(gatewayMessage);
+						var channel = eventMessage.EventData();
+						Models.Channel clientChannel = null;
+
+						if (channel.IsPrivate)
+						{
+							var recipient = AddOrGetUser(channel.Recipient);
+
+							clientChannel = new Models.Channel(this, channel.Id, recipient);
+							_dmChannels[clientChannel.Id] = clientChannel;
+						}
+						else
+						{
+							Models.Channel.Types type = channel.Type == Discord.Models.Channel.Types.Voice
+								? Models.Channel.Types.Voice
+								: Models.Channel.Types.Text;
+
+							var guild = Guilds.First(g => g.Id == channel.GuildId);
+							clientChannel = new Models.Channel(this, channel.Id, guild, channel.Name, type, channel.Topic);
+							_guildChannels[clientChannel.Id] = clientChannel;
+						}
+
+						ChannelCreate(this, new ChannelEventArgs(clientChannel));
 						break;
 					}
 				case GatewayEvent.ChannelUpdate:
 					{
 						var eventMessage = ChannelUpdateEvent.FromGatewayMessage(gatewayMessage);
+						var channel = eventMessage.EventData();
+						var clientChannel = (channel.IsPrivate ? DmChannels : GuildChannels).First(c => c.Id == channel.Id);
+
+						clientChannel.Update(channel.Name, channel.Topic);
+						ChannelUpdate(this, new ChannelEventArgs(clientChannel));
 						break;
 					}
 				case GatewayEvent.ChannelDelete:
 					{
 						var eventMessage = ChannelDeleteEvent.FromGatewayMessage(gatewayMessage);
+						var channel = eventMessage.EventData();
+						var clientChannel = (channel.IsPrivate ? DmChannels : GuildChannels).First(c => c.Id == channel.Id);
+
+						ChannelDelete(this, new ChannelEventArgs(clientChannel));
+						// do delete
 						break;
 					}
 				case GatewayEvent.GuildCreate:
@@ -123,9 +162,8 @@ namespace BestGirlBot.Client
 						foreach (var member in guild.Members)
 						{
 							var user = member.User;
+							var clientUser = AddOrGetUser(user);
 							var clientRoles = member.RoleIds.Select(rid => Roles.First(r => r.Id == rid));
-							var clientUser = new Models.User(this, user.Id, user.Username);
-							_users[user.Id] = clientUser;
 
 							var clientMember = new Models.Member(this, clientUser, clientGuild, member.Nick, member.Mute, member.Deaf, clientRoles);
 							guildMembers.Add(clientMember);
@@ -134,23 +172,34 @@ namespace BestGirlBot.Client
 						foreach (var channel in guild.Channels)
 						{
 							var type = channel.Type == Discord.Models.Channel.Types.Voice ? Models.Channel.Types.Voice : Models.Channel.Types.Text;
-							var guildChannel = new Models.Channel(this, channel.Id, clientGuild, channel.Name, type);
+							var guildChannel = new Models.Channel(this, channel.Id, clientGuild, channel.Name, type, channel.Topic);
 							_guildChannels[guildChannel.Id] = guildChannel;
 						}
 
 						var owner = guildMembers.First(m => m.User.Id == guild.OwnerId);
 						clientGuild.Create(guildMembers, guild.Name, !guild.Unavailable, owner);
 
+						GuildCreate(this, new GuildEventArgs(clientGuild));
 						break;
 					}
 				case GatewayEvent.GuildUpdate:
 					{
 						var eventMessage = GuildUpdateEvent.FromGatewayMessage(gatewayMessage);
+						var guild = eventMessage.EventData();
+						var clientGuild = Guilds.First(g => g.Id == guild.Id);
+
+						clientGuild.Update();
+						GuildUpdate(this, new GuildEventArgs(clientGuild));
 						break;
 					}
 				case GatewayEvent.GuildDelete:
 					{
 						var eventMessage = GuildDeleteEvent.FromGatewayMessage(gatewayMessage);
+						var guild = eventMessage.EventData();
+						var clientGuild = Guilds.First(g => g.Id == guild.Id);
+
+						GuildDelete(this, new GuildEventArgs(clientGuild));
+						// do delete
 						break;
 					}
 				case GatewayEvent.GuildBanAdd:
@@ -211,16 +260,46 @@ namespace BestGirlBot.Client
 				case GatewayEvent.MessageCreate:
 					{
 						var eventMessage = MessageCreateEvent.FromGatewayMessage(gatewayMessage);
+						var message = eventMessage.EventData();
+						var clientAuthor = Users.First(u => u.Id == message.Author.Id);
+						Models.Channel clientChannel = null;
+
+						if (_dmChannels.ContainsKey(message.ChannelId)) clientChannel = _dmChannels[message.ChannelId];
+						else if (_guildChannels.ContainsKey(message.ChannelId)) clientChannel = _guildChannels[message.ChannelId];
+
+						var clientMessage = new Models.Message(clientAuthor, clientChannel, message.Content, message.Id);
+
+						MessageCreate(this, new MessageEventArgs(clientMessage));
 						break;
 					}
 				case GatewayEvent.MessageUpdate:
 					{
-						var eventMessage = MessageUpdateEvent.FromGatewayMessage(gatewayMessage);
+						var eventMessage = MessageCreateEvent.FromGatewayMessage(gatewayMessage);
+						var message = eventMessage.EventData();
+						var clientAuthor = Users.First(u => u.Id == message.Author.Id);
+						Models.Channel clientChannel = null;
+
+						if (_dmChannels.ContainsKey(message.ChannelId)) clientChannel = _dmChannels[message.ChannelId];
+						else if (_guildChannels.ContainsKey(message.ChannelId)) clientChannel = _guildChannels[message.ChannelId];
+
+						var clientMessage = new Models.Message(clientAuthor, clientChannel, message.Content, message.Id);
+
+						MessageUpdate(this, new MessageEventArgs(clientMessage));
 						break;
 					}
 				case GatewayEvent.MessageDelete:
 					{
-						var eventMessage = MessageDeleteEvent.FromGatewayMessage(gatewayMessage);
+						var eventMessage = MessageCreateEvent.FromGatewayMessage(gatewayMessage);
+						var message = eventMessage.EventData();
+						var clientAuthor = Users.First(u => u.Id == message.Author.Id);
+						Models.Channel clientChannel = null;
+
+						if (_dmChannels.ContainsKey(message.ChannelId)) clientChannel = _dmChannels[message.ChannelId];
+						else if (_guildChannels.ContainsKey(message.ChannelId)) clientChannel = _guildChannels[message.ChannelId];
+
+						var clientMessage = new Models.Message(clientAuthor, clientChannel, message.Content, message.Id);
+
+						MessageDelete(this, new MessageEventArgs(clientMessage));
 						break;
 					}
 				case GatewayEvent.MessageDeleteBulk:

@@ -80,5 +80,18 @@ namespace BestGirlBot.Client
 
 			_services[service.Name] = service;
 		}
+
+		private Models.User AddOrGetUser(Discord.Models.User user)
+		{
+			if (_users.ContainsKey(user.Id))
+			{
+				return _users[user.Id];
+			}
+
+			Models.User clientUser = new Models.User(this, user.Id, user.Username);
+			_users[clientUser.Id] = clientUser;
+
+			return clientUser;
+		}
 	}
 }
