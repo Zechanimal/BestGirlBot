@@ -347,21 +347,23 @@ namespace BestGirlBot.Client
 			if (_handshakeCompleted && _heartbeatInterval != null)
 			{
 				DateTime previous = DateTime.Now;
+				DateTime lastServerHeartbeat = DateTime.Now;
 
 				while (!cancellationToken.IsCancellationRequested)
 				{
 					DateTime now = DateTime.Now;
-					var interval = (now - previous).TotalMilliseconds;
+					var interval = (now - lastServerHeartbeat).TotalMilliseconds;
 					bool serverHeartbeat = interval >= _heartbeatInterval;
 
 					if (serverHeartbeat)
 					{
 						GatewaySocketClient.SendMessage(new Heartbeat(_previousSequence.Value));
+						lastServerHeartbeat = DateTime.Now;
 					}
 
 					Heartbeat(this, new HeartbeatEventArgs(previous, now, serverHeartbeat));
 
-					previous = now;
+					previous = DateTime.Now;
 					await Task.Delay(100, cancellationToken).ConfigureAwait(false);
 				}
 			}
