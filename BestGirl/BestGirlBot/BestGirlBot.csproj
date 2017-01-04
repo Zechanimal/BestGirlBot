@@ -157,6 +157,8 @@
     <Compile Include="Client\Models\Message.cs" />
     <Compile Include="Client\Models\Role.cs" />
     <Compile Include="Client\Models\User.cs" />
+    <Compile Include="Client\Services\Command.cs" />
+    <Compile Include="Client\Services\Interfaces\ICommand.cs" />
     <Compile Include="Client\Services\Interfaces\IService.cs" />
     <Compile Include="Client\Services\Service.cs" />
     <Compile Include="Discord\Converters\GenericArrayConverter.cs" />

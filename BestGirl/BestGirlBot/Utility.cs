@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
+using System.Text;
 
 namespace BestGirlBot
 {
@@ -21,6 +23,30 @@ namespace BestGirlBot
 			var decompressed = ZlibDecompress(bytes);
 			using (var reader = new StreamReader(decompressed))
 				return reader.ReadToEnd();
+		}
+
+		public static string ReduceWhitespace(string s, bool trim = true)
+		{
+			StringBuilder builder = new StringBuilder();
+
+			var str = trim ? s.Trim() : s;
+			bool previousWhitespace = false;
+			foreach (char c in str)
+			{
+				if (previousWhitespace && Char.IsWhiteSpace(c)) continue;
+				if (Char.IsWhiteSpace(c))
+				{
+					builder.Append(' ');
+					previousWhitespace = true;
+				}
+				else
+				{
+					builder.Append(c);
+					previousWhitespace = false;
+				}
+			}
+
+			return builder.ToString();
 		}
 	}
 }

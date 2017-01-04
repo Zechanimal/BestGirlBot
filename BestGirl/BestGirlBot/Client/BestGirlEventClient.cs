@@ -79,6 +79,8 @@ namespace BestGirlBot.Client
 						var eventMessage = ReadyEvent.FromGatewayMessage(gatewayMessage);
 						var data = eventMessage.EventData();
 						_handshakeCompleted = true;
+						BotUser = AddOrGetUser(data.User);
+
 						foreach (var guild in data.Guilds)
 						{
 							_guilds[guild.Id] = new Models.Guild(this, guild.Id);

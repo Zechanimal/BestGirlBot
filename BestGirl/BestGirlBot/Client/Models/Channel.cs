@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace BestGirlBot.Client.Models
 {
@@ -21,6 +19,8 @@ namespace BestGirlBot.Client.Models
 		public string Topic { get; private set; }
 		public User Recipient { get; private set; }
 		public Types Type { get; private set; }
+
+		public string Mention => Discord.Models.Message.MentionChannel(Id);
 
 		public Channel(BestGirlClient client, ulong id, Guild guild, string name, Types type, string topic)
 		{

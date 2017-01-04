@@ -8,6 +8,8 @@
 		public Guild Guild { get; private set; }
 		public string Name { get; private set; }
 
+		public string Mention => Discord.Models.Message.MentionRole(Id);
+
 		public Role(BestGirlClient client, ulong id, Guild guild, string name)
 		{
 			Client = client;

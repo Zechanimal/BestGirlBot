@@ -11,5 +11,7 @@ namespace BestGirlBot.Client.Services.Interfaces
 		string Description { get; }
 
 		void Start(BestGirlClient client);
+
+		void AddCommand(ICommand command);
 	}
 }

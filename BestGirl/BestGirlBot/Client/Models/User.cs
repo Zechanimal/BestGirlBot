@@ -16,5 +16,7 @@ namespace BestGirlBot.Client.Models
 			Id = id;
 			Username = username;
 		}
+
+		public string Mention => Discord.Models.Message.MentionUser(Id);
 	}
 }

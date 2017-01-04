@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BestGirlBot.Client.Events;
 using BestGirlBot.Client.Services.Interfaces;
 
@@ -10,6 +11,8 @@ namespace BestGirlBot.Client.Services
 
 		public abstract string Name { get; }
 		public abstract string Description { get; }
+
+		protected List<ICommand> Commands = new List<ICommand>();
 
 		public void Start(BestGirlClient client)
 		{
@@ -28,6 +31,8 @@ namespace BestGirlBot.Client.Services
 			Client.MessageCreate += OnMessageCreate;
 			Client.MessageDelete += OnMessageDelete;
 			Client.MessageUpdate += OnMessageUpdate;
+
+			Client.MessageCreate += CommandHandler;
 
 			Initialize();
 		}
@@ -48,5 +53,17 @@ namespace BestGirlBot.Client.Services
 		protected abstract void OnMessageDelete(object sender, MessageEventArgs e);
 		protected abstract void OnMessageUpdate(object sender, MessageEventArgs e);
 		protected abstract void OnUserUpdate(object sender, UserEventArgs e);
+
+		protected void CommandHandler(object sender, MessageEventArgs e)
+		{
+			var message = e.Message;
+			foreach (var command in Commands)
+			{
+				if (command.CanHandleMessage(Client, message))
+					command.HandleMessage(Client, message);
+			}
+		}
+
+		public void AddCommand(ICommand command) => Commands.Add(command);
 	}
 }

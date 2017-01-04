@@ -24,8 +24,6 @@ namespace BestGirlBot.Client
 		private bool _handshakeCompleted = false;
 		private int? _heartbeatInterval = null;
 
-		private ulong? _botUserId = null;
-
 		private ConcurrentDictionary<ulong, Models.Guild> _guilds;
 		private ConcurrentDictionary<ulong, Models.Channel> _guildChannels;
 		private ConcurrentDictionary<ulong, Models.Channel> _dmChannels;
@@ -37,6 +35,7 @@ namespace BestGirlBot.Client
 		public IEnumerable<Models.Channel> DmChannels => _dmChannels.Select(c => c.Value);
 		public IEnumerable<Models.User> Users => _users.Select(c => c.Value);
 		public IEnumerable<Models.Role> Roles => _roles.Select(r => r.Value);
+		public Models.User BotUser { get; private set; }
 
 		public IEnumerable<IService> Services => _services.Select(s => s.Value);
 		private Dictionary<string, IService> _services { get; set; }
@@ -45,7 +44,6 @@ namespace BestGirlBot.Client
 		{
 			Config = config;
 			RestClient = new RestClient(DiscordHttpApiBaseUri, Config.AuthToken, Config.UserAgent);
-			_botUserId = RestClient.GetCurrentUserAsync().Result.Id;
 
 			GatewaySocketClient = new GatewaySocketClient();
 			GatewaySocketClient.GatewayMessageReceived += OnGatewayMessageReceived;
