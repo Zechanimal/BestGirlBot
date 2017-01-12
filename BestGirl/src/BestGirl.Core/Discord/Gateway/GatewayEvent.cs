@@ -1,0 +1,67 @@
+﻿using System.ComponentModel;
+
+namespace BestGirl.Core.Discord.Gateway
+{
+	public enum GatewayEvent
+	{
+		[Description("READY")]
+		Ready,
+		[Description("RESUMED")]
+		Resumed,
+		[Description("CHANNEL_CREATE")]
+		ChannelCreate,
+		[Description("CHANNEL_UPDATE")]
+		ChannelUpdate,
+		[Description("CHANNEL_DELETE")]
+		ChannelDelete,
+		[Description("GUILD_CREATE")]
+		GuildCreate,
+		[Description("GUILD_UPDATE")]
+		GuildUpdate,
+		[Description("GUILD_DELETE")]
+		GuildDelete,
+		[Description("GUILD_BAN_ADD")]
+		GuildBanAdd,
+		[Description("GUILD_BAN_REMOVE")]
+		GuildBanRemove,
+		[Description("GUILD_EMOJIS_UPDATE")]
+		GuildEmojisUpdate,
+		[Description("GUILD_INTEGRATIONS_UPDATE")]
+		GuildIntegrationsUpdate,
+		[Description("GUILD_MEMBER_ADD")]
+		GuildMemberAdd,
+		[Description("GUILD_MEMBER_REMOVE")]
+		GuildMemberRemove,
+		[Description("GUILD_MEMBER_UPDATE")]
+		GuildMemberUpdate,
+		[Description("GUILD_MEMBERS_CHUNK")]
+		GuildMembersChunk,
+		[Description("GUILD_ROLE_CREATE")]
+		GuildRoleCreate,
+		[Description("GUILD_ROLE_UPDATE")]
+		GuildRoleUpdate,
+		[Description("GUILD_ROLE_DELETE")]
+		GuildRoleDelete,
+		[Description("MESSAGE_CREATE")]
+		MessageCreate,
+		[Description("MESSAGE_UPDATE")]
+		MessageUpdate,
+		[Description("MESSAGE_DELETE")]
+		MessageDelete,
+		[Description("MESSAGE_DELETE_BULK")]
+		MessageDeleteBulk,
+		[Description("PRESENCE_UPDATE")]
+		PresenceUpdate,
+		[Description("TYPING_START")]
+		TypingStart,
+		[Description("USER_SETTINGS_UPDATE")]
+		UserSettingsUpdate,
+		[Description("USER_UPDATE")]
+		UserUpdate,
+		[Description("VOICE_STATE_UPDATE")]
+		VoiceStateUpdate,
+		[Description("VOICE_SERVER_UPDATE")]
+		VoiceServerUpdate
+	}
+
+}
